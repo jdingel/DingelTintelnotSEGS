@@ -38,7 +38,7 @@ If you type `make`, it will build the PDF containing the exhibits,
 which are committed to the tasks' output folders.
 
 To reproduce research results from scratch, run `rm -r ./*/output` in this folder (the folder in which this `README.md` file is located) to delete all output files,
-then `git checkout -- setup_environment/output/` and `git checkout -- maptile_templates/output/` to restore those tasks,
+then `git checkout -- setup_environment/output/` and `git checkout -- maptile_templates/output/` to restore those tasks.
 Next, run `make` in the `setup_environment/code` to install required Julia and Stata packages.
 (If using a computing cluster with SLURM job scheduling, customize `setup_environment/code/run.sbatch` with your credentials as required.)
 Finally, if you type `make` in `exhibits/code`,
