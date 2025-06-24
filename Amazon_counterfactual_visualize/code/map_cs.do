@@ -1,5 +1,3 @@
-// visualize new results under new specification (\lambda as preference shifter)
-
 clear all
 
 graph set window fontface "Garamond"

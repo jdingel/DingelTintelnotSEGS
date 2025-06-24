@@ -73,7 +73,6 @@ emp_cont_a = sum(df_changes[df_changes[!,:id_j] .== treatmentID, :X_ij_after])
 emp_increase = emp_cont_a - emp_cont_b
 @assert emp_increase > 0 "Error: Incorrect input"
 
-# See comment on lines 108-112
 emp_a = (emp_cont_a - emp_cont_b) + emp_dgp_b
 
 # Load A shock solved by CBM as initial guess for CSP
