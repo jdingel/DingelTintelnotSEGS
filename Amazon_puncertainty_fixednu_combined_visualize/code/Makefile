@@ -13,9 +13,9 @@ fixednu: $(INPUTS_fixednu)
 include ../../generic.make
 
 ## OUTPUT
-$(OUTPUTS_dest): fixednu_puncertainty_combined_scatter_exhibit_dest.do ../input/cont_wage_puncertainty_pctile.csv ../input/cont_emp_puncertainty_pctile.csv ../input/simulation_distribution_dest_sigma_4.0.csv | ../output
+$(OUTPUTS_dest): fixednu_puncertainty_combined_scatter_exhibit_dest.do ../input/cont_wage_puncertainty_pctile.csv ../input/cont_emp_puncertainty_pctile.csv ../input/simulation_distribution_dest_sigma_4.0.csv | $(STATA_OOPR)
 	$(STATA) $<
-$(OUTPUTS_orig): fixednu_puncertainty_combined_scatter_exhibit_orig.do ../input/cont_rent_puncertainty_pctile.csv ../input/cont_res_puncertainty_pctile.csv ../input/simulation_distribution_orig_sigma_4.0.csv | ../output
+$(OUTPUTS_orig): fixednu_puncertainty_combined_scatter_exhibit_orig.do ../input/cont_rent_puncertainty_pctile.csv ../input/cont_res_puncertainty_pctile.csv ../input/simulation_distribution_orig_sigma_4.0.csv | $(STATA_OOPR)
 	$(STATA) $<
 
 ## INPUT

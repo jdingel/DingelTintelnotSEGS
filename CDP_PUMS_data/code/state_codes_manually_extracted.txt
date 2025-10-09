@@ -1,0 +1,7 @@
+List of manually collected data from PUMS data dictionary
+
+The state or foreign country coding standards are inconsistent for variables MIGSP (origin of migration) and PUMA (data record area). For example, "007" stands for "Connecticut" in MIGSP while is presented by "00009" in PUMA. The following two datasets are therefore manually collected from the PUMS data dictionary "../output/PUMSDataDict00_02.pdf".
+
+1. "../output/migsp_code.csv" is from p58-61 in the documentation.
+
+2. "../output/puma_code.csv" is from p17-18 in the documentation.

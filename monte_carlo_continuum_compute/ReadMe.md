@@ -10,4 +10,4 @@ This task computes counterfactual outcomes in the continuum model for the data-g
 in the continuum model.
 
 ## Input
-* `nyc2010_time_elasticity.csv`,`nyc2010_lodes_wzero_wdelta.csv`, `nyc2010_lodes_wzero_wdelta.dta`, `primitives_nyc2010_time.jld2`: baseline NYC 2010 data.
+* `nyc2010_time_elasticity.csv`,`nyc2010_lodes_wzero_wdelta.csv`, `primitives_nyc2010_time.jld2`: baseline NYC 2010 data.

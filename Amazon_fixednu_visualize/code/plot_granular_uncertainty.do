@@ -49,8 +49,9 @@ shell mv "../output/temp.eps" "../output/scatter_gu_realr_simulation_fixednu_sum
 
 count if winsor_d_real_rent_ratio_p5 > 0
 local realr_p5_pos = string(`r(N)')
-shell echo -En "`realr_p5_pos' out of 2160 origin tracts have a positive change in rents at the 5\textsuperscript{th} percentile." > ///
-	"../output/report_gu_realr_fixednu_sigma_`1'.tex"
+file open myfile using "../output/report_gu_realr_fixednu_sigma_`1'.tex", write replace
+file write myfile "`realr_p5_pos' out of 2160 origin tracts have a positive change in rents at the 5\textsuperscript{th} percentile."
+file close myfile
 
 // Change in the number of residents 
 import delimited "../input/amazon_ctfl_tract_cbm_sigma_`1'_prob.csv", stringcols(1/2) clear
@@ -87,8 +88,9 @@ shell mv "../output/temp.eps" "../output/scatter_gu_realw_simulation_fixednu_sum
 
 count if d_real_wage_ratio_p5 > 0
 local realw_p5_pos = string(`r(N)')
-shell echo -En "`realw_p5_pos' out of 2143 destination tracts have a positive change in wages at the 5\textsuperscript{th} percentile." > ///
-	"../output/report_gu_realw_fixednu_sigma_`1'.tex"
+file open myfile using "../output/report_gu_realw_fixednu_sigma_`1'.tex", write replace
+file write myfile "`realw_p5_pos' out of 2143 destination tracts have a positive change in wages at the 5\textsuperscript{th} percentile."
+file close myfile
 
 
 // Change in the number of workers
@@ -110,18 +112,22 @@ twoway (scatter d_emp_p95 d_emp_mean if j!="`tract'" & d_emp_mean>-1000, msymbol
 		ylabel(,labsize(medlarge) gmax) xlabel(,labsize(medlarge))
 graph export "../output/temp.eps", replace
 shell mv "../output/temp.eps" "../output/scatter_gu_emp_simulation_fixednu_sumstats_diff_sigma_`1'.eps" // graph export is not compatible with decimal numbers in filenames
+
 if `outlier_count' == 1 {
-	shell echo -n "one outlier with an employment decline of `outlier' is not depicted" > ///
-		"../output/outlier_note_gu_emp_fixednu_sigma_`1'.tex"
+	file open myfile using "../output/outlier_note_gu_emp_fixednu_sigma_`1'.tex", write replace
+	file write myfile "one outlier with an employment decline of `outlier' is not depicted"
+	file close myfile
 } 
 else {
-	shell echo -n "`outlier_count' outliers with employment declines greater than 1,000 are not depicted" > ///
-		"../output/outlier_note_gu_emp_fixednu_sigma_`1'.tex"
+	file open myfile using "../output/outlier_note_gu_emp_fixednu_sigma_`1'.tex", write replace
+	file write myfile "`outlier_count' outliers with employment declines greater than 1,000 are not depicted"
+	file close myfile
 }
 
 count if j!="`tract'"
 local emp_tract_count = string(`r(N)')
 count if d_emp_p5 < 0 & d_emp_p95 > 0 & j!="`tract'"
 local emp_signif = string(`r(N)')
-shell echo -n "the 90\% confidence interval for the change in employment includes zero for `emp_signif' of the `emp_tract_count' non-Amazon workplaces." > ///
-	"../output/report_gu_emp_fixednu_sigma_`1'.tex" 
+file open myfile using "../output/report_gu_emp_fixednu_sigma_`1'.tex", write replace
+file write myfile "the 90\% confidence interval for the change in employment includes zero for `emp_signif' of the `emp_tract_count' non-Amazon workplaces."
+file close myfile

@@ -54,7 +54,7 @@ println("Population variance of log(λ): ", std_log_λ_pop^2)
 println("Sample variance of log(λ): ", var(log_λ))
 @assert abs((std_log_λ_pop^2)/var(log_λ) - 1) < 0.05 || Λ .== 0.0
 
-# Baseline equilibirum in levels
+# Baseline equilibrium in levels
 w_pre, r_pre, ell_pre = cont_baseline_eqlm_solver(primitives_pre, 0.1, 1e-5, 1000, true)
 
 p_nb = w_pre ./ A_pre

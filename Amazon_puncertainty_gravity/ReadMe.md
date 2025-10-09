@@ -5,8 +5,8 @@ This task computes the gravity regression for each of the 100 variations of the 
 * `nyc2010_dest_time_puncertainty_#.dta`: Destination tract fixed effects for commuting flows with google maps times as bilateral covariate
 * `nyc2010_orig_time_puncertainty_#.dta`: Origin tract fixed effects for commuting flows with google maps times as bilateral covariate
 * `nyc2010_time_elasticity_puncertainty_#.csv`: The commuting time elasticity in preperiod
-* `nyc2010_lodes_wzeros_puncertainty_#.dta`: LODES NYC 2010 data with zero commuting flows.
-* `nyc2010_lodes_wzeros_wdelta_puncertainty_#.dta`: LODES NYC 2010 data with zero commuting flows and commuting costs.
+* `nyc2010_lodes_wzero_wdelta_puncertainty_#.dta`: LODES NYC 2010 data with zero commuting flows and commuting costs.
+* `nyc2010_bilat_predicted_time_puncertainty_#.dta`: Bilateral predicted commuting flows from gravity model.
 
 
 ## Code
@@ -14,13 +14,7 @@ This task computes the gravity regression for each of the 100 variations of the 
 
 ## Input
 * `baseline_data_puncertainty_s#.csv`: Baseline commuting shares for parameter uncertainty scenario #.
-* `clean_wage.do`: replicate ORS's method to calculate tract-level wage.
 * `gravity_saveFE_time.do`: run gravity regression, with transit time specification.
-* `data_before.do`: prepare relevant single-year data for the year before the shock, including
-	- LODES commuting data;
-	- commuting cost as a function of transit time;
-	- gravity regression;
-	- wage level.
 * `merge_geocords.do`: calculate tract-pair level distance
 * `nyc_delta.do`:
     - merge NYC tract-level transit time with commuting flows,

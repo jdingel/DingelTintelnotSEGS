@@ -10,15 +10,15 @@ Each packing script executes three steps:
 - (3) Pack elasticities $\alpha$, $\epsilon$, $\sigma$, $\eta$, and $\zeta$, along with the nested structure `nests`, and baseline shares of $\ell$ and $y$ into a `NamedTuple`.
 
 To execute the first step:
-- `pack_cbm_models.jl`, `pack_ife_models.jl`: 
+- `pack_cbm_models.jl`, `pack_ife_models.jl`, and `pack_cbm_nested_logit_models.jl`: 
     Compute the baseline equilibrium prices $r_k, w_n$ and quantities $\ell_{kn}$ based on the exogenous primitives $T_k, A_n, \delta_{kn}$.
-- `pack_csp_models.jl`: 
+- `pack_csp_models.jl`, and `pack_csp_nested_logit_models.jl`: 
     Load the observed baseline commuting matrix $\ell_{kn}$ and the observed wages $w_n$.
-- `pack_svd_models.jl`: 
+- `pack_(svd|nnmf)_models.jl`: 
     Load the approximated baseline commuting matrix $\ell_{kn}$ and the observed wages $w_n$.
 
 ## output
-- `../output/model_list.csv`: a list of model specifications.
+- `../output/specification_list.csv`: a list of model specifications.
 - `model_%.jld2`: contains a tuple of { $\alpha, \epsilon, \sigma, \eta, \zeta$, nests, $\ell$ -share,  $y$ -share}.
 
 ## input
@@ -27,3 +27,10 @@ To execute the first step:
 - `%elasticity.csv`: contains the commuting elasticity.
 - `nyc_delta_bar.jld2`: contains commuting time.
 - `nyc2010_wage.dta`, `NTA_avg_wages_2010.dta`, and `nyc_avg_wage_2008_2010.dta`: contain observed wages.
+- `nyc2010_lodes_wzero_wdelta.dta`: LODES NYC 2010 data (including zeros).
+- `nyc_pool_2008_2010_lodes_wzero_wdelta.dta`: LODES NYC 2008 and 2010 data (including zeros).
+- `nyc_NTA_2010_lodes_wzero_wdelta.dta`: LODES NYC 2010 data at the NTA level (including zeros).
+- `nyc_2010_levels_tracttotract_approx_svd_%.dta.zip`: approximated labor allocation in Stata format.
+- `nyc_2010_levels_tracttotract_approx_nnmf_%.dta.zip`: non-negative matrix factored vector of approximated 2010 commuter count levels for tract pairs.
+- `nyc2010_time_elasticity_dist.csv`: commuting time elasticity in preperiod.
+- `nyc2010_time_elasticity_ife_%.csv`: commuting elasticity estimates from the IFE procedure.

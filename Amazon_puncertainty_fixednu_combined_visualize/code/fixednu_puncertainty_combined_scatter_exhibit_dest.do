@@ -16,13 +16,13 @@ save `fixednu'
 
 import delimited using "../input/cont_wage_puncertainty_pctile.csv", clear
 gen id = _n
-keep id geoid11 wage_change_mean wage_change_p5 wage_change_p95
+keep id j wage_change_mean wage_change_p5 wage_change_p95
 foreach var of varlist wage_change_* {
     rename `var' `var'_bootstrap
 }
 merge 1:1 id using `fixednu', assert(match) nogen
 local tract = 36081000700
-drop if geoid11 == `tract'
+drop if j == `tract'
 // plot fixednu 95th percentile vs fixednu mean, and bootstrap 95th percentile vs bootstrap mean and same for 5th percentile for both with scatterplots
 twoway  (scatter d_real_wage_ratio_p95_fixednu d_real_wage_ratio_mean_fixednu , msymbol(Dh) msize(tiny) mcolor(blue)) ///
         (scatter d_real_wage_ratio_p5_fixednu d_real_wage_ratio_mean_fixednu , msymbol(Th) msize(tiny) mcolor(red)) ///

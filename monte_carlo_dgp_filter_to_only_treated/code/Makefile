@@ -13,20 +13,18 @@ OUTPUT_iid = $(foreach Lambda, $(set_Lambda), $(foreach triplet, $(set_triplet),
 OUTPUT_cont_deterministic = $(foreach shock, $(set_shock), $(foreach event, 1 2, ../output/DGP_continuum_1145_treatedonly_0_$(shock)_$(event).dta))
 OUTPUT_cont_varying = $(foreach Lambda, 0.1 0.25 0.5 1, $(foreach shock, $(set_shock), $(foreach event, $(set_event), ../output/DGP_continuum_1145_treatedonly_$(Lambda)_$(shock)_$(event).dta)))
 OUTPUT_cont = $(OUTPUT_cont_deterministic) $(OUTPUT_cont_varying)
-OUTPUT_noshock = $(foreach event, $(set_event), ../output/DGP_iid_1145_treatedonly_0_2.488905_1.00_$(event).dta)
 
 ## RECIPES
 all: $(OUTPUT_iid) $(OUTPUT_cont)
 cont: $(OUTPUT_cont)
 iid: $(OUTPUT_iid)
-noshock: $(OUTPUT_noshock)
 include ../../generic.make
 
 #OUTPUTS
-../output/DGP_iid_1145_treatedonly_%.dta: keep_only_treated.do ../input/DGP_%.csv | $(OOPR)
+../output/DGP_iid_1145_treatedonly_%.dta: keep_only_treated.do ../input/DGP_%.csv | $(STATA_OOPR)
 	$(STATA) $^ 1145 $@
 
-../output/DGP_continuum_1145_treatedonly_%.dta: keep_only_treated.do ../input/DGP_continuum_%_ell.csv | $(OOPR)
+../output/DGP_continuum_1145_treatedonly_%.dta: keep_only_treated.do ../input/DGP_continuum_%_ell.csv | $(STATA_OOPR)
 	$(STATA) $^ 1145 $@
 
 #INPUTS

@@ -99,8 +99,21 @@ julia_pc_and_slurm() {
             shift;
         fi;
         print_info Julia $@;
-        julia $@;
+		check_julia_version 1.10.2;
+        julia +1.10.2 $@;
 	fi 
+} ;
+
+check_julia_version() {
+	if command -v juliaup > /dev/null; then
+		if ! juliaup status | grep -v "release" | grep -q "$1"; then
+			echo "Julia version $1 was not found on this machine. To use version $1, please run 'juliaup add $1'.";
+			exit 1;
+		fi;
+	else
+		echo "juliaup is not installed on this machine. Please follow instructions to do so at https://julialang.org/downloads/";
+		exit 1;
+	fi;
 } ;
 
 clean_task() {

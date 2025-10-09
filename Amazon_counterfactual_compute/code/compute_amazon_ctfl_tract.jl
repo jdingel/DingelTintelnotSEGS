@@ -9,7 +9,6 @@ treated_tract = "36081000700" # Long Island City
 emp_increase = 25_000.0
 model_params= load("../input/model_"*ARGS[1]*".jld2")["model_parameters"]
 @unpack σ, η, α, ζ, l_share, y_share = model_params
-@assert σ != Inf
 
 if ζ == 1
 	@unpack ε = model_params
@@ -19,7 +18,11 @@ end
 
 (K, N) = size(l_share)
 
-baseline_flows = DataFrame(load("../input/nyc2010_lodes_wzero_wdelta.dta"))
+if ARGS[1] != "csp_2008"
+    baseline_flows = DataFrame(load("../input/nyc2010_lodes_wzero_wdelta.dta"))
+else
+	baseline_flows = DataFrame(load("../input/nyc2008_lodes_wzero_wdelta.dta"))
+end
 baseline_flows = sort(baseline_flows, [:j, :i])
 destination_tractid_vector = unique(baseline_flows.j)
 origin_tractid_vector = unique(baseline_flows.i)
@@ -28,7 +31,11 @@ if occursin("autarky", ARGS[1])
 	origin_tractid_vector = model_params.dest_ids
 end
 L = sum(baseline_flows.X_ij)
-@assert L == 2488905
+if ARGS[1] != "csp_2008"
+    @assert L == 2488905
+else
+	@assert L == 2271169
+end
 ell_kn = l_share .* L
 
 if σ == 1.1 
@@ -81,7 +88,15 @@ end
 
 hat_w, hat_r, hat_ell = eha_solver(w_guess, r_guess, model_params, exo_changes, eha_comp_params)
 
-hat_P = sum(((hat_w ./Ā̂_star) .^(1 - σ)) .* sum(y_share, dims = 1)[:])^(1/(1-σ))
+if σ != Inf
+	hat_P = sum(((hat_w ./Ā̂_star) .^(1 - σ)) .* sum(y_share, dims = 1)[:])^(1/(1-σ))
+else
+	not_one = findall(!=(1.0), hat_w)
+	@assert all(hat_w[Ā̂_star .== 1.0] .== 1.0)
+    @assert all(isapprox.(hat_w[not_one], Ā̂_star[not_one]; atol=1e-12))
+	hat_P = 1.0
+end
+
 hat_realr = hat_r./hat_P
 hat_realw = hat_w./hat_P
 

@@ -42,7 +42,7 @@ function price_update(w_guess, r_guess, T, A_bar, δ_bar, λ, α, σ, ε_compute
 	w_imp, r_imp = similar(w_guess), similar(r_guess) # initialization
 	w_new, r_new = similar(w_guess), similar(r_guess) 
 	iter = 0
-	diff = Inf # an abitrary large number
+	diff = Inf # an arbitrary large number
 
 	while diff > tol
 		ell_kn = commuting_flows(r_old, w_old, α, ε_compute, ζ, δ_bar, λ, nests, L)

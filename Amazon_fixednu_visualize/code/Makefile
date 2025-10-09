@@ -2,7 +2,7 @@ SHELL=bash
 include ../../shell_functions.make
 
 ## DEFINITIONS
-set_sigma = Inf 4.0 1.1
+set_sigma = Inf 4.0
 OUTPUTS_pricediff = $(foreach sigma, $(set_sigma), $(foreach var, realr realw, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_$(sigma).eps))
 OUTPUTS_emp_res = $(foreach sigma, $(set_sigma), $(foreach var, res emp, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_$(sigma).eps) ../output/outlier_note_gu_emp_fixednu_sigma_$(sigma).tex)
 OUTPUTS_GU_DESC = $(foreach sigma, $(set_sigma), $(foreach var, realr realw emp, ../output/report_gu_$(var)_fixednu_sigma_$(sigma).tex))
@@ -12,16 +12,26 @@ rchange_fixednu_mean_change_sigma_$(sigma).png wchange_fixednu_mean_change_sigma
 #remove wchange variables with sigma = Inf from above, wages are trivial under sigma = Inf
 OUTPUTS_GU_MAPS  := $(filter-out ../output/map_gu_realwchange_fixednu_sigma_Inf.png ../output/map_gu_realwchange_fixednu_mean_change_sigma_Inf.png, $(OUTPUTS_GU_MAPS))
 MAPTILE_INPUTS = $(addprefix ../input/geoid11_,coords.dta database.dta maptile.ado)
+AHQ2_dest_bins = $(foreach sigma, $(set_sigma), ../output/AHQ2_employment_wages_bydistbin_fixednu_sigma_$(sigma).tex \
+	../output/AHQ2_wages_bydistbin_fixednu_sigma_$(sigma).eps \
+	../output/AHQ2_emp_bydistbin_fixednu_sigma_$(sigma).eps ../output/AHQ2_rents_bydistbin_fixednu_sigma_$(sigma).eps)
+AHQ2_orig_bins = $(foreach sigma, $(set_sigma), ../output/AHQ2_residents_rents_bydistbin_fixednu_sigma_$(sigma).tex \
+	../output/AHQ2_residents_bydistbin_fixednu_sigma_$(sigma).eps ../output/AHQ2_rents_bydistbin_fixednu_sigma_$(sigma).eps)
 
-all: $(OUTPUTS_pricediff) $(OUTPUTS_emp_res) $(OUTPUTS_GU_DESC) $(OUTPUTS_GU_MAPS) 
+all: $(OUTPUTS_pricediff) $(OUTPUTS_emp_res) $(OUTPUTS_GU_DESC) $(AHQ2_dest_bins) $(AHQ2_orig_bins) $(OUTPUTS_GU_MAPS) 
 include ../../generic.make
 ## OUTPUT RECIPES
-$(foreach var, res emp, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_%.eps) $(foreach var, realr realw, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_%.eps) $(foreach var, realr realw emp, ../output/report_gu_$(var)_fixednu_sigma_%.tex) ../output/outlier_note_gu_emp_fixednu_sigma_%.tex: plot_granular_uncertainty.do $(addprefix ../input/simulation_distribution_, orig_sigma_%.csv dest_sigma_%.csv) ../input/nyc2010_lodes_wzero_wdelta.dta ../input/amazon_ctfl_tract_cbm_sigma_%_prob.csv | $(OOPR)
+$(foreach var, res emp, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_%.eps) $(foreach var, realr realw, ../output/scatter_gu_$(var)_simulation_fixednu_sumstats_diff_sigma_%.eps) $(foreach var, realr realw emp, ../output/report_gu_$(var)_fixednu_sigma_%.tex) ../output/outlier_note_gu_emp_fixednu_sigma_%.tex: plot_granular_uncertainty.do $(addprefix ../input/simulation_distribution_, orig_sigma_%.csv dest_sigma_%.csv) ../input/nyc2010_lodes_wzero_wdelta.dta ../input/amazon_ctfl_tract_cbm_sigma_%_prob.csv | $(STATA_OOPR)
 	$(STATA) $< $*
-$(foreach var, rchange wchange, ../output/map_gu_real$(var)_fixednu_sigma_%.png ../output/map_gu_real$(var)_fixednu_mean_change_sigma_%.png): plot_gu_map.do $(addprefix ../input/simulation_distribution_, orig_sigma_%.csv dest_sigma_%.csv) ../input/map.do $(MAPTILE_INPUTS) $(addprefix ../input/amazon_ctfl_tract_cbm_, sigma_%_wage.csv sigma_%_ell.csv) | $(OOPR)
+$(foreach var, rchange wchange, ../output/map_gu_real$(var)_fixednu_sigma_%.png ../output/map_gu_real$(var)_fixednu_mean_change_sigma_%.png): plot_gu_map.do $(addprefix ../input/simulation_distribution_, orig_sigma_%.csv dest_sigma_%.csv) ../input/map.do $(MAPTILE_INPUTS) $(addprefix ../input/amazon_ctfl_tract_cbm_, sigma_%_wage.csv sigma_%_ell.csv) | $(STATA_OOPR)
 	$(STATA) $< $*
-
+../output/AHQ2_residents_rents_bydistbin_fixednu_sigma_%.tex ../output/AHQ2_residents_bydistbin_fixednu_sigma_%.eps ../output/AHQ2_rents_bydistbin_fixednu_sigma_%.eps: table_figure_simulation_bydistbin_orig.do ../input/simulation_bydistbin_fixednu_orig_%.csv | $(STATA_OOPR)
+	$(STATA) $< $*
+../output/AHQ2_employment_wages_bydistbin_fixednu_sigma_%.tex ../output/AHQ2_wages_bydistbin_fixednu_sigma_%.eps ../output/AHQ2_emp_bydistbin_fixednu_sigma_%.eps ../output/AHQ2_rents_bydistbin_fixednu_sigma_%.eps: table_figure_simulation_bydistbin_dest.do ../input/simulation_bydistbin_fixednu_dest_%.csv | $(STATA_OOPR)
+	$(STATA) $< $*
 ## INPUT RECIPES
+../input/simulation_bydistbin_fixednu_%.csv: ../../Amazon_fixednu_distance_bins/output/simulation_bydistbin_fixednu_%.csv | ../input
+	ln -sf $< $@
 ../input/simulation_distribution_%.csv: ../../Amazon_fixednu_analyze/output/simulation_distribution_%.csv | ../input 
 	ln -sf $< $@
 ../input/nyc2010_lodes_wzero_wdelta.dta: ../../nyc_baseline_data/output/nyc2010_lodes_wzero_wdelta.dta | ../input 

@@ -16,9 +16,14 @@ are solved by matching the continuum labor allocation changes in the treated tra
 * `sum_iid_labor_$(Lambda)_$(pop)_$(shock).dta`: 
 records the estimated slopes, intercepts and MSEs when regressing the changes in labor allocation
 from the iid model on the CBM/CSP predicted changes.
+* `results_%.dta`: 
+records summary statistics for the estimated slopes, intercepts and MSEs when regressing the changes in labor allocation or rents from the iid model on the CBM/CSP predicted changes.
 
 ## Code
 * `sum_labor.do` computes the estimated slopes, intercepts and MSEs when regressing the iid changes on predicted changes across 100 simulations, population size, magnitudes of lambda and productivity shocks.
+* `summarize_detail.do`: computes summary statistics (mean, median, min, max, std. dev.) for the estimated
+slopes, intercepts and MSEs when regressing the iid changes 
+on predicted changes across 100 simulations, population size, magnitudes of lambda and productivity shocks.
 
 ## Input
 * `DGP_iid_1145_treatedonly_$(Lambda)_$(pop)_$(shock)_$(event).dta`: Before and after commuting flows from the iid DGP, filtered to only include the treated tract as the destination.

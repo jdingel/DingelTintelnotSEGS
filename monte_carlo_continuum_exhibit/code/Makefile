@@ -2,7 +2,6 @@ SHELL=bash
 include ../../shell_functions.make
 
 ## DEFINITIONS
-set_event = $(shell seq 1 1 100)
 set_pop := 2.488905 5 12.5 25 50 125 250 2560
 set_Lambda := 0 0.1 0.25 0.5 1
 set_shock := 1.09 
@@ -11,11 +10,15 @@ OUTPUTS_LABOR = $(addprefix ../output/, \
 		csp_slope_median_continuum_labor_$(Lambda)_2.488905_$(shock).tex slopes_intercepts_densities_continuum_labor_$(Lambda)_2.488905_$(shock).eps \
 		mse_ratio_median_continuum_labor_$(Lambda)_2.488905_$(shock).tex mse_ratio_sd_continuum_labor_$(Lambda)_2.488905_$(shock).tex \
 		MSE_ratio_histogram_continuum_labor_$(Lambda)_2.488905_$(shock).eps sumstats_continuum_labor_$(Lambda)_$(shock).tex)))
+OUTPUTS_PRICES = $(addprefix ../output/, \
+		$(foreach Lambda, $(set_Lambda), $(foreach shock, $(set_shock), \
+		csp_slope_median_continuum_prices_$(Lambda)_2.488905_$(shock).tex slopes_intercepts_densities_continuum_prices_$(Lambda)_2.488905_$(shock).eps mse_ratio_median_continuum_prices_$(Lambda)_2.488905_$(shock).tex MSE_ratio_histogram_continuum_prices_$(Lambda)_2.488905_$(shock).eps sumstats_continuum_prices_$(Lambda)_$(shock).tex)))
 INPUTS = $(addprefix ../input/, \
 		$(foreach Lambda, $(set_Lambda), $(foreach pop, $(set_pop), \
 		sum_continuum_labor_$(Lambda)_2.488905_$(pop).dta sum_continuum_prices_$(Lambda)_2.488905_$(pop).dta results_$(Lambda)_$(pop).dta)))
 
-all: $(OUTPUTS_LABOR) 
+all: $(OUTPUTS_LABOR) $(OUTPUTS_PRICES) ../output/monte_carlo_result_mean_continuum.tex
+table: ../output/monte_carlo_result_mean_continuum.tex
 include ../../generic.make
 .INTERMEDIATE: $(INPUTS)
 .NOTPARALLEL:
@@ -23,14 +26,31 @@ include ../../generic.make
 ## RECIPES
 
 $(addprefix ../output/, csp_slope_median_continuum_labor_%.tex slopes_intercepts_densities_continuum_labor_%.eps mse_ratio_median_continuum_labor_%.tex mse_ratio_sd_continuum_labor_%.tex MSE_ratio_histogram_continuum_labor_%.eps): exhibits_labor1.do \
-	../input/sum_continuum_labor_%.dta | $(OOPR)
+	../input/sum_continuum_labor_%.dta | $(STATA_OOPR)
 	$(STATA) $< $(subst _, , $*)
 
 $(foreach shock, $(set_shock), ../output/sumstats_continuum_labor_%_$(shock).tex): exhibits_labor2.do \
-$(foreach shock, $(set_shock), $(foreach pop, $(set_pop), ../input/sum_continuum_labor_%_$(pop)_$(shock).dta)) | $(OOPR)
+$(foreach shock, $(set_shock), $(foreach pop, $(set_pop), ../input/sum_continuum_labor_%_$(pop)_$(shock).dta)) | $(STATA_OOPR)
 	$(eval twoargs := $(shell echo $@ | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
 	$(STATA) $< $(twoargs)
 
+$(addprefix ../output/, csp_slope_median_continuum_prices_%.tex slopes_intercepts_densities_continuum_prices_%.eps mse_ratio_median_continuum_prices_%.tex MSE_ratio_histogram_continuum_prices_%.eps): exhibits_prices1.do \
+	../input/sum_continuum_prices_%.dta | $(STATA_OOPR)
+	$(STATA) $< $(subst _, , $*)
+
+$(foreach shock, $(set_shock), ../output/sumstats_continuum_prices_%_$(shock).tex): exhibits_prices2.do \
+$(foreach shock, $(set_shock), $(foreach pop, $(set_pop), ../input/sum_continuum_prices_%_$(pop)_$(shock).dta)) | $(STATA_OOPR)
+	$(eval twoargs := $(shell echo $@ | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
+	$(STATA) $< $(twoargs)
+../output/monte_carlo_result_mean_continuum.tex: sum_all.do $(foreach Lambda, $(set_Lambda), $(foreach pop, $(set_pop), ../input/results_$(Lambda)_$(pop).dta)) | $(STATA_OOPR)
+	$(STATA) $<
+#Code
+exhibits_prices2.do: exhibits_labor2.do
+	sed 's/_labor/_prices/g' $< | awk '/collapse/{print "replace mse_cbm = mse_cbm * 1e10"}1' | awk '/collapse/{print "replace mse_csp = mse_csp * 1e10"}1' |\
+	awk '/ctitle/{print "sfmt(\"f\" \\ \"f\" \\ \"f\" \\ \"f\" \\ \"f\" \\ \"f\" \\ \"f\") ///"}1' > $@
+
 ## INPUTS
-../input/sum_continuum_labor_%.dta: ../../monte_carlo_continuum_analysis/output/sum_continuum_labor_%.dta | ../input
+../input/sum_continuum_%.dta: ../../monte_carlo_continuum_analysis/output/sum_continuum_%.dta | ../input
+	ln -sf $< $@
+../input/results%.dta: ../../monte_carlo_continuum_analysis/output/results%.dta | ../input
 	ln -sf $< $@

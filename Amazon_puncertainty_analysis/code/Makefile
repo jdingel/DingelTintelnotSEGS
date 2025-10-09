@@ -11,7 +11,7 @@ OUTPUTS_comp = $(add_prefix ../output/cont_, emp_puncertainty_zero_in_ci_dest_co
 all: $(OUTPUTS) $(OUTPUTS_comp)
 include ../../generic.make
 ## OUTPUT
-$(OUTPUTS) $(OUTPUTS_comp): compute_var_change.do $(INPUTS) $(INPUTS_base_compute) | $(OOPR)
+$(OUTPUTS) $(OUTPUTS_comp): compute_var_change.do $(INPUTS) $(INPUTS_base_compute) | $(STATA_OOPR)
 	$(STATA) $<
 
 ## INPUT

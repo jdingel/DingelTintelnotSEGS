@@ -17,3 +17,4 @@ It then saves the results as a csv file.
 ## Input
 * `cont_(var)_puncertainty_%.csv`: The AHQ2 counterfactual predictions for the parameter uncertainty simulation %. 
 This output contains results for employment, rents, wages, and residents.
+* `amazon_ctfl_tract_cbm_sigma_4.0_{ell,rent,wage}.csv`: The counterfactual predictions of commuting flows, rents, and wages for the CBM.

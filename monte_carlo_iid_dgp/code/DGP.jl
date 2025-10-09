@@ -3,7 +3,7 @@ Pkg.activate("../input/Project.toml")
 using CSV, DataFrames, Distributions, JLD2, FileIO, StatFiles, Statistics, Random, UnPack
 
 # Functions
-include("../input/granular_programs.jl") # labor_allocation()
+include("../input/finitemodel_programs.jl") # labor_allocation()
 include("../input/baseline_equilibrium_solver.jl") # cont_baseline_eqlm_solver()
 
 # Extract passed-in arguments
@@ -61,7 +61,7 @@ prob_pre = ell_pre ./ sum(ell_pre)
 
 ell_pre_mat = reshape(labor_realization(length(r_pre), length(w_pre), prob_pre[:], headcount, agg_labor, seed), K, N)
 
-# Sanity check
+# Check aggregate labor sum
 println("Simulated agg labor: ", sum(ell_pre_mat))
 @assert abs(sum(ell_pre_mat) / agg_labor - 1) < 1e-3
 
@@ -78,7 +78,7 @@ w_post, r_post, ell_post = cont_baseline_eqlm_solver(primitives_post, 0.1, 1e-5,
 prob_post = ell_post ./ sum(ell_post)
 ell_post_mat = reshape(labor_realization(length(r_post), length(w_post), prob_post[:], headcount, agg_labor, seed+1), K, N)
 
-# Sanity check
+# Check aggregate labor sum
 println("Simulated agg labor: ", sum(ell_post_mat))
 @assert abs(sum(ell_post_mat) / agg_labor - 1) < 1e-3
 

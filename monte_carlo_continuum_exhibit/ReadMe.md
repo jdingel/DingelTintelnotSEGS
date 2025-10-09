@@ -23,10 +23,10 @@ are solved by matching the continuum labor allocation changes in the treated tra
 
 ## Code
 
-* `sum_{labor,prices}.do`: computes the estimated slopes, intercepts and MSEs when regressing the continuum changes 
+* `sum_all.do`: computes the estimated slopes, intercepts and MSEs when regressing the continuum changes 
 on predicted changes across 100 simulations, population size, magnitudes of lambda and productivity shocks.
 
-* `exhibits_{labor,prices}.do`: draws the densities of regression coefficients and the histograms of MSE ratios, 
+* `exhibits_{labor,prices}{1,2}.do`: draws the densities of regression coefficients and the histograms of MSE ratios, 
 and summarizes the mean statistics of the coefficients and MSEs.
 
 ## Inputs
@@ -34,3 +34,6 @@ and summarizes the mean statistics of the coefficients and MSEs.
 * `sum_continuum_{labor,prices}_$(Lambda)_$(pop)_$(shock).dta`: 
 records the estimated slopes, intercepts and MSEs when regressing the changes in labor allocation or rents
 from the continuum model on the CBM/CSP predicted changes.
+
+* `results%.dta`:
+records summary statistics for the estimated slopes, intercepts and MSEs when regressing the changes in labor allocation or rents from the continuum model on the CBM/CSP predicted changes.

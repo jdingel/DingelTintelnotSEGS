@@ -8,15 +8,10 @@ Second, it evaluates the performance of the SVD approximations of the commuting 
 ## output
 * `zero_shares_${rank}.txt`: share of zero counts in the approximated matrix
 * `nyc_2010_levels_tracttotract_approx_svd_18.dta.zip`: approximated labor allocation in Stata format
-* `commuting_costs_mat_svd_performance.txt`: summarize the R-squared value of the SVD approximation of the commuting cost matrix.
-* `commuting_flows_mat_svd_performance.txt`: summarize the R-squared value of the SVD approximation of the commuting flows matrix.
 
 ## code 
 * `labor_approximation.jl`: produces transformed low-rank approximation of 2010 LODES commuting matrix 
 and reports the share of zeros in the approximated matrix
-* `convert_labor_b_to_dta.do` : converts the approximated labor allocation matrix to Stata format
-* `evaluate_commuting_flows_svd.jl`: performs and compares low-rank SVD approximations and a CBM model on observed commuting flows data
-* `evaluate_commuting_costs_svd.jl`: evaluates the performance of SVD approximations on a commuting cost matrix.
 
 ## temp
 * `labor_b_approx_${rank}.csv`: approximated labor allocation in CSV format
@@ -25,5 +20,3 @@ and reports the share of zeros in the approximated matrix
 * `nyc2010_lodes_wzero_wdelta.dta`: commuting flows in NYC 2010, with zero commuting flows.
 * `SVD_funcs.jl`: returns the SVD rank-`r` approximation of a given matrix, where `r` is exogenous rank option
 * `convert_labor_b_to_dta.do`: converts approximated labor allocation matrices to dta format for approximated baseline data.
-* `nyc_delta_bar.jld2`: is the commuting cost matrix.
-* `baseline_equilibrium_outcomes_sigma_4.0.jld2`: is the baseline equilibrium outcomes. 

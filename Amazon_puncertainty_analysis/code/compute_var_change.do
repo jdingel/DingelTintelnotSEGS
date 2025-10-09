@@ -36,8 +36,8 @@ program define collapse_counterfactuals
         append using `cont_`var'_puncertainty_`i''
     }
 
-    collapse (p5) `var'_change_p5=`var'_change (p95) `var'_change_p95=`var'_change, by(`key')
-    keep `key' `var'_change_p5 `var'_change_p95
+    collapse (p5) `var'_change_p5=`var'_change (p95) `var'_change_p95=`var'_change (mean) `var'_change_mean=`var'_change, by(`key') 
+    keep `key' `var'_change_p5 `var'_change_p95 `var'_change_mean
     export delimited "../output/cont_`var'_puncertainty_pctile.csv", replace
 end 
 
@@ -57,7 +57,7 @@ foreach price in "rent" "wage" {
 // quantities
 foreach quant in "res" "emp" {
 
-    collapse_counterfactuals "`price'"
+    collapse_counterfactuals "`quant'"
 
     * count insignificant changes
     count if `quant'_change_p5 <= 0 & `quant'_change_p95 >= 0

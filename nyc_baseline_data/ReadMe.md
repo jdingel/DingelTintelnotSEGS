@@ -8,7 +8,7 @@ This task prepares baseline data for event studies in New York City, including i
 * `(stub)_orig_time.dta`: Origination tract fixed effects for commuting flows with google maps times as bilateral covariate
 * `(stub)_time_elasticity.csv`: The commuting time elasticity in preperiod
 * `(stub)_lodes_wzeros.dta`: LODES data from stub with zero commuting flows.
-* `(stub)_lodes_wzeros_wdelta.dta`: LODES data from stub with zero commuting flows and commuting costs.
+* `(stub)_lodes_wzero_wdelta.dta`: LODES data from stub with zero commuting flows and commuting costs.
 * `nyc_delta_bar.jld2`: The time commuting cost matrix.
 
 ## Code
@@ -38,4 +38,3 @@ This task prepares baseline data for event studies in New York City, including i
 
 
 
-It takes about half an hour to run the entire task.
