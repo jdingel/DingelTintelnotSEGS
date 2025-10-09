@@ -34,7 +34,7 @@
 \hypersetup{
 	pdftex,
     pdftitle={Spatial Economics for Granular Settings},
-    pdfauthor={Jonathan I. Dingel and Felix Tintelnot},     % author
+    pdfauthor={Jonathan I. Dingel and Felix Tintelnot},
     colorlinks=true,       % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links
     citecolor=black,        % color of links to bibliography
@@ -69,7 +69,6 @@
 Felix Tintelnot
 \\ Duke University, NBER, and CEPR}
 \date{\the\day \ \monthname[\the\month] \the\year}
-
 
 \newcommand\idiosyncraticphrase{idiosyncratic preference}
 
@@ -109,15 +108,15 @@ This figure depicts the regression coefficients and mean squared errors from 100
 the data-generating process is the estimated covariates-based
 model of New York City in 2010,
 and the counterfactual change is a 9\% increase in productivity in one workplace tract.
-See Appendix~\ref{sec:appendix:counterfactuals:MonteCarlo:continuum} for a detailed description of the simulation procedure.
-``Covariates-based'' means estimating the covariates-based parameterization described in Section~\ref{sec:ctflgranular:estimation} using the simulated data.
+See Appendix~A.1 for a detailed description of the simulation procedure.
+``Covariates-based'' means estimating the covariates-based parameterization described in Section~3.2 using the simulated data.
 ``Calibrated-shares'' means using the observed (simulated) shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
 In Panel~A, the densities for the covariates-based model are on the left vertical axis and the densities for the calibrated-shares procedure are on the right vertical axis.
 \par}
 \end{minipage}
 \end{center}
 \end{figure}
-\begin{figure}[!h] %Placement of this figure is quite temperamental!
+\begin{figure}[!h]
 \caption{Comparison of models' predictive performance across 83 events}
 \label{fig:event:83events:coefficientdensities}
 \begin{center}\vspace{-4mm}
@@ -136,7 +135,7 @@ In Panel~A, the densities for the covariates-based model are on the left vertica
 } \\
 \begin{minipage}{0.98\linewidth}{\footnotesize \textsc{Notes}: 
 ``Calibrated-shares'' refers to using the observed shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
-``Covariates-based'' in Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} refers to the parameterization described in Section~\ref{sec:ctflgranular:estimation}.
+``Covariates-based'' in Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} refers to the parameterization described in Section~3.2.
 ``No extensive margin'' in Panels~\subref*{fig:eventstudy_coef_continfzero_cs} and \subref*{fig:mse_cc}
 retains only the intensive-margin predictions of the covariates-based model.
 This case uses 
@@ -169,7 +168,7 @@ Vertical lines depict the medians of the slope coefficient distributions.
 This figure depicts the predictive performance of 
 using an approximation of the commuting matrix in exact hat algebra.
 The approximation is derived from a rank-16 singular value decomposition of the observed commuting matrix,
-as described in Appendix~\ref{sec:appendix:svd}.
+as described in Appendix~B.4.
 The covariates-based model is the same as in Figure~\ref{fig:event:83events:coefficientdensities}.
 Panel~\subref*{fig:density_slope_SVD} depicts the distributions of slope and intercept coefficients, and the vertical lines denote the median slope coefficients.
 \par}\end{minipage}\\ \vspace{4mm}
@@ -264,6 +263,33 @@ In Panel~B, the regressand is the simulation-specific change in commuters from a
 {\sum_{k',n'} \tilde{w}_{n'}^\epsilon \left(\tilde{r}_{k'}^\alpha  \bar{\delta}_{k'n'}\right)^{-\epsilon}}
 \right]
 .\end{equation}
+\begin{equation}\label{eqn:cont_laborallocation}
+\frac{\ell_{kn}}{L}
+=
+\frac
+{w_{n}^\epsilon \left(r_{k}^\alpha  \delta_{kn}\right)^{-\epsilon}}
+{\sum_{k',n'}w_{n'}^\epsilon \left(r_{k'}^\alpha  \delta_{k'n'}\right)^{-\epsilon}}
+.
+\end{equation}
+\begin{align}
+\hat{w}_{n}
+&=
+\hat{A}_n
+\left(\sum_{k} \hat{y}_{kn}\frac{y_{kn}}{\sum_{k'} y_{k'n}}\right)^{\frac{1}{1-\sigma}}
+\hat{P}
+\hat{Y}^{\frac{1}{\sigma-1}}
+\label{eqn:exacthatalgebra:wages}
+\\
+\hat{r}_{k}
+&=
+\hat{T}_{k}^{-1} \sum_{n}\hat{y}_{kn}\frac{y_{kn}}{\sum_{n'}y_{kn'}}
+\label{eqn:exacthatalgebra:rents}
+\\
+\hat{\ell}_{kn} 
+&=
+\frac{\hat{w}_{n}^{\epsilon}\left(\hat{r}_{k}^{\alpha} \hat{\bar{\delta}}_{kn}\hat{ \lambda}_{kn} \right)^{-\epsilon}}{\sum_{k',n'} \hat{w}_{n'}^{\epsilon}\left(\hat{r}_{k'}^{\alpha} \hat{\bar{\delta}}_{k'n'}\hat{ \lambda}_{k'n'} \right)^{-\epsilon} \frac{\ell_{k'n'}}{L}} \qquad \text{ if } \ell_{kn} > 0
+\label{eqn:exacthatalgebra:laborallocation}
+.\end{align}
 \begin{figure}[hbt]
 \caption{Amazon HQ2 counterfactual change in residents}
 \begin{center}\vspace{-4mm}
@@ -416,7 +442,7 @@ the data-generating process is
 a finite-sample realization from the estimated covariates-based model of New York City in 2010,
 and
 a finite-sample realization from that model with a 9\% increase in productivity in one workplace tract.
-``Covariates-based'' means applying the parameterization described in Section~\ref{sec:ctflgranular:estimation} to the simulated data.
+``Covariates-based'' means applying the parameterization described in Section~3.2 to the simulated data.
 ``Calibrated-shares'' means using the observed (simulated) shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
 \par}
 \end{minipage}
@@ -640,7 +666,7 @@ This figure shows the magnitude of successive singular values for the NYC 2010 c
 This table reports the predictive performance, measured by the average values of the regression slope and intercept coefficients and MSE, using SVD approximations of various ranks across two cases: 
 a) 100 Monte Carlo simulations, with each drawn from the parameterized continuum model with a 9\% productivity shock to the tract containing 200 Fifth Avenue, 
 where the performance is evaluated relative to the continuum model's predictions; 
-and b) the 83 event studies examined in Section~\ref{sec:ctflgranular:eventstudies}.
+and b) the 83 event studies examined in Section~3.5.
 \par}\end{minipage}
 \end{center}
 \vspace{-1.5em}
@@ -653,7 +679,7 @@ and b) the 83 event studies examined in Section~\ref{sec:ctflgranular:eventstudi
 \input{../input/eventstudy_nnmf_performance.tex}
 \begin{minipage}{0.98\textwidth}
 {\footnotesize \textsc{Notes}:
-This table reports the predictive performance, as measured by the average values of the regression slope and intercept coefficients and MSE, across the 83 event studies examined in Section~\ref{sec:ctflgranular:eventstudies} using various ranks of NNMF low-rank approximated commuting matrices.
+This table reports the predictive performance, as measured by the average values of the regression slope and intercept coefficients and MSE, across the 83 event studies examined in Section~3.5 using various ranks of NNMF low-rank approximated commuting matrices.
 \par}\end{minipage}
 \end{center}
 \vspace{-1.5em}
@@ -938,8 +964,8 @@ We found similar impersistence when using alternative boundaries.
 Each row reports results for all tract pairs in Detroit (upper panel) or New York City (lower panel) with fewer than 5 or 10 commuters in the 2013 LODES data.
 The ``Share'' column reports the share of tract pairs covered by the row.
 The ``Gravity'' columns report the $R^2$ obtained by regressing the 2014 number of commuters on the number of commuters predicted by a gravity model estimated using 2013 data.
-The ``Gravity: time'' column estimates the gravity equation as described in Section~\ref{sec:ctflgranular:estimation}.
-The ``Gravity: distance'' column uses $\ln \delta_{kn} = \ln \text{distance}_{kn}$ rather than commuting costs defined in Section~\ref{sec:ctflgranular:estimation}.
+The ``Gravity: time'' column estimates the gravity equation as described in Section~3.2.
+The ``Gravity: distance'' column uses $\ln \delta_{kn} = \ln \text{distance}_{kn}$ rather than commuting costs defined in Section~3.2.
 The ``2013 values'' columns report the $R^2$ obtained by regressing the 2014 number of commuters on the 2013 number of commuters.
 All estimated slope coefficients are positive.
 The two ``2013 values'' columns differ because the regression sample is within observations where predictions from the gravity model are available.
@@ -1022,8 +1048,8 @@ The ``Mean'' row reports the mean value across the 10 simulations.
 \iftoggle{12ptfont}{\begin{minipage}{0.93\textwidth}}{\begin{minipage}{0.82\textwidth}}
 {\footnotesize \textsc{Notes}: 
 This table compares the price ($r_k/P$ or $w_n/P$) dispersion generated by the simulations used
-in Section~\ref{sec:appendix:expostregret:prices} (100,000 simulations)
-and Section~\ref{sec:appendix:expostregret:expost} (10 simulations).
+in Section~E.2 (100,000 simulations)
+and Section~E.3 (10 simulations).
 As described in the text, each tract's price dispersion is
 the standard deviation of the price in the commuting equilibrium with finitely many individuals across simulations
 divided by the continuum-case rational expectation of that price.
@@ -1294,4 +1320,8 @@ and
 \end{minipage}
 \end{center}
 \end{figure}
+
+\bibliographystyle{aeanobold-oxford}
+\bibliography{DT}
+
 \end{document}

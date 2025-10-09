@@ -18,10 +18,12 @@ include ../../generic.make
 	rm $(addprefix $(basename $(notdir $@)), .aux .log .out)
 	mv $(notdir $@) $@
 
-../output/exhibits.pdf: exhibits.tex $(shell grep -o '../input/[A-Za-z0-9_\.]*\.[a-z]*' exhibits.tex)  | ../output
+../output/exhibits.pdf: exhibits.tex DT.bib $(shell grep -o '../input/[A-Za-z0-9_\.]*\.[a-z]*' exhibits.tex)  | ../output
+	pdflatex -draftmode --shell-escape $<
+	bibtex $(basename $<)
 	pdflatex -draftmode --shell-escape $<
 	pdflatex $<
-	rm $(addprefix $(basename $(notdir $@)), .aux .log .out)
+	rm $(addprefix $(basename $<), .aux .log .out .bbl .blg)
 	mv $(notdir $@) $@
 
 ../output/exhibits_table.md: exhibit_table.sh exhibits.tex | ../output
