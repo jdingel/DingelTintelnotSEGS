@@ -9,7 +9,7 @@ include("../input/employment_gap_fn.jl")
 
 # Argument
 emp_increase = 25000.0
-treated_tract = 36081000700 ## Long Island City
+treated_tract = "36081000700" ## Long Island City
 
 # Prepare data
 ## Data before the shock
@@ -18,6 +18,7 @@ baseline_flows = DataFrame(load("../input/nyc2010_lodes_wzero_wdelta_puncertaint
 
 #create a dataframe with each i and the sum of X_ij for all j's with that i
 destination_tractid_vector = primitives["destination_FIPS"]
+destination_tractid_vector = string.(round.(Int, destination_tractid_vector))
 L = primitives["pop"]
 origin_tractid_vector = unique(baseline_flows[!,:i])
 @assert L == sum(baseline_flows[!,:X_ij])
@@ -88,7 +89,7 @@ w_ctfl = hat_w .* w_baseline
 r_ctfl = hat_r .* r_baseline
 ell_kn_a = hat_l .* ell_kn_b
 
-P_cont_after = sum((w_ctfl ./A_hat) .^(1-σ))^(1/(1-σ))
+P_cont_after = sum((w_ctfl ./(A_hat .* primitives["productivity"])) .^(1-σ))^(1/(1-σ))
 real_r_ctfl = r_ctfl/P_cont_after
 real_w_ctfl = w_ctfl/P_cont_after
 P_k_after = (r_ctfl .^α) * (P_cont_after^(1-α)) 
@@ -96,6 +97,7 @@ P_k_after = (r_ctfl .^α) * (P_cont_after^(1-α))
 # Output Results
 df_rent_output = DataFrame(hcat(origin_tractid_vector,r_baseline,r_ctfl,real_r_baseline,real_r_ctfl), :auto)
 rename!(df_rent_output, :x1 => :i, :x2 => :rb, :x3 => :ra, :x4 => :real_rb, :x5 => :real_ra)
+df_rent_output.i = string.(df_rent_output.i)
 CSV.write("../output/cont_rent_puncertainty_"*ARGS[1]*".csv", df_rent_output)
 
 df_wage_output = DataFrame(hcat(destination_tractid_vector,w_baseline,w_ctfl,real_w_baseline,real_w_ctfl), :auto)
@@ -108,4 +110,5 @@ CSV.write("../output/cont_emp_puncertainty_"*ARGS[1]*".csv", df_employment_outpu
 
 df_residents_output = DataFrame(hcat(origin_tractid_vector,sum(ell_kn_b,dims=2),sum(ell_kn_a,dims=2)), :auto)
 rename!(df_residents_output, :x1 => :i, :x2 => :res_b, :x3 => :res_a)
+df_residents_output.i = string.(df_residents_output.i)
 CSV.write("../output/cont_res_puncertainty_"*ARGS[1]*".csv", df_residents_output)

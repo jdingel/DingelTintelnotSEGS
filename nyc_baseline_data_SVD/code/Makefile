@@ -19,7 +19,7 @@ include ../../generic.make
 	$(JULIA) $< $(arg)
 $(foreach rank, $(set_rank), ../output/nyc_2010_levels_tracttotract_approx_svd_$(rank).dta.zip): ../output/%.zip: ../temp/%
 	zip $@ $<
-../temp/nyc_2010_levels_tracttotract_approx_svd_%.dta : ../input/convert_labor_b_to_dta.do ../temp/labor_b_approx_svd_%.csv | $(OOPR)
+../temp/nyc_2010_levels_tracttotract_approx_svd_%.dta : ../input/convert_labor_b_to_dta.do ../temp/labor_b_approx_svd_%.csv | $(STATA_OOPR)
 	 $(STATA) --no-job-name $^ $@
 
 

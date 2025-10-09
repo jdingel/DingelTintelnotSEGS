@@ -9,7 +9,8 @@ The reason for excluding the "geographic unit" signifier from the filename unlik
 We only need the name difference to pipe the correct model level into the correct script.
 ## Input
 * `model_(model).jld2`: model parameters for a given model.
-* `nyc_(NTA)_2012_2010_observed_changes_tracttotract.dta`: observed changes in commuting flows between 2010 and 2012. Use just for baseline commuting flows.
+* `nyc_NTA_2012_2010_observed_changes_origtodest.dta`: observed changes in commuting flows between 2010 and 2012 to the level of NTAs. Use just for baseline commuting flows.
+* `nyc2010_lodes_wzero_wdelta.dta`: LODES NYC 2010 data with zero commuting flows and commuting costs.
 * `eha_solver.jl`: equilibrium solver for the economic model.
 * `employment_gap_fn.jl`: A julia function that evaluates the eha solver for a given set of parameters and returns the difference between its predicted employment increase for a single treated tract and a given employment target.
 ## Code

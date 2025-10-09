@@ -1,0 +1,1 @@
+This task takes around 12.2 CPU hours. It should be run in parallel on a high-performance cluster.

@@ -9,4 +9,4 @@ This task simulates 100 baseline commuting shares variations by sampling individ
 * `simulate_baseline_data.jl`: Simulates 100 variations of the baseline commuting matrix by sampling individuals with replacement from the observed commuting matrix.
 
 ## Input
-* `nyc2010_lodes_wzeros_wdelta.dta`: LODES NYC 2010 data with zero commuting flows.
+* `nyc2010_lodes_wzero_wdelta.dta`: LODES NYC 2010 data with zero commuting flows.

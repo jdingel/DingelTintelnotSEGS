@@ -24,13 +24,12 @@ are solved by matching the continuum labor allocation changes in the treated tra
 
 * `sumstats_iid_labor_$(Lambda)_$(shock).tex`: mean statistics of regression coefficients and MSEs across population size in predicting changes in labor allocations
 
-* `hist_montecarlo_iid_empchange_$(shock).eps`, `sd_montecarlo_iid_empchanges_$(shock).tex`, `sumstats_montecarlo_iid_empchanges_$(shock).tex`: 
-summary statistics and histogram of employment changes in the treated tract
-
 ## Code
 
 * `exhibits_labor(1/2).do`: draws the densities of regression coefficients and the histograms of MSE ratios, 
 and summarizes the mean statistics of the coefficients and MSEs.
+
+* `sum_all.do`: constructs table summarizing the mean statistics of the regression slope coefficients and MSEs between CBM or CSP across different `Lambda` and `pop`.
 
 ## Inputs
 

@@ -1,4 +1,3 @@
-// Our preferred specification:
 // 1. delta as a function of transit time,
 // 2. impute observations with missing transit time based on distance
 clear all

@@ -42,7 +42,7 @@ const zeta = 1.0
 
 # model name 
 model_class = ARGS[1]
-@assert model_class ∈ ["sigma", "eta", "pool_2008_2010", "nta"]
+@assert model_class ∈ ["sigma", "eta", "pool_2008_2010", "nta", "2008"]
 
 
 # CSP_sigma begin
@@ -82,6 +82,22 @@ if model_class == "eta"
     )
 end
 # CSP_eta end
+
+# CSP_2008 begin
+if model_class == "2008"
+    save_model_parameters(
+        model_class,
+        "../input/primitives_nyc2008_time.jld2",
+        "../input/nyc2008_time_elasticity.csv",
+        "../input/nyc2008_lodes_wzero_wdelta.dta",
+        "../input/nyc2008_wage.dta",
+        "Wj",
+        "../output/model_csp_2008.jld2", 
+        4.0,
+        0.0 # eta
+    )
+end
+# CSP_2008 end
 
 # CSP_pool_2008_2010 begin
 if model_class == "pool_2008_2010"

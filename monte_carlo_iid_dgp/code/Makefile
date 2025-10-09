@@ -27,7 +27,7 @@ include ../../generic.make
 	cp -p $< $@
 
 ## TEMP
-../temp/nyc2010_lodes_wzero_wdelta.csv: data_prep.do $(shell grep -o '[\\.]*/input/[A-Za-z0-9_\\.]*' data_prep.do) | $(OOPR)
+../temp/nyc2010_lodes_wzero_wdelta.csv: data_prep.do $(shell grep -o '[\\.]*/input/[A-Za-z0-9_\\.]*' data_prep.do) | $(STATA_OOPR)
 	$(STATA) $< 
 
 ## INPUT
@@ -37,7 +37,7 @@ include ../../generic.make
 	ln -sf $< $@
 ../input/primitives_nyc2010_time.jld2: ../../nyc_baseline_calibrate/output/primitives_nyc2010_time.jld2 | ../input
 	ln -sf $< $@
-../input/granular_programs.jl: ../../granular_equilibrium_solver/code/granular_programs.jl | ../input
+../input/finitemodel_programs.jl: ../../finitemodel_solver/code/finitemodel_programs.jl | ../input
 	ln -sf $< $@
 ../input/gravity_saveFE_time.do: ../../common_scripts/code/gravity_saveFE_time.do | ../input
 	ln -sf $< $@

@@ -1,0 +1,16 @@
+* SSC dependencies:
+    binscatter == 7.2.0
+    estout == 3.31.0
+    ftools == 2.49.1
+    geodist == 1.1.0
+    heatplot == 1.1.1
+    listtex
+    maptile == 1.0.5
+    outreg == 4.32.0
+    outreg2 == 2.3.2
+    ppmlhdfe == 2.3.0
+    reghdfe == 6.12.3
+    spmap == 1.3.2
+* GitHub dependencies:
+gtools == 1.7.5
+save_data

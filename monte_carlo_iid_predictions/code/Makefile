@@ -47,7 +47,7 @@ include ../../generic.make
 ../output/primitives_%.jld2: ../input/calibrate_main.jl ../input/describe_data.jl ../input/calibrate_function.jl ../output/elasticity_%.csv  ../output/fe_i_%.dta ../output/fe_j_%.dta ../output/nyc2010_lodes_wzero_wdelta_%.dta | $(JULIA_OOPR) $(OOPR)
 	$(JULIA) --no-job-name $< $@ 4.0 ../output/elasticity_$*.csv ../output/fe_i_$*.dta ../output/fe_j_$*.dta ../output/nyc2010_lodes_wzero_wdelta_$*.dta
 ../output/elasticity_%.csv ../output/fe_i_%.dta ../output/fe_j_%.dta ../output/nyc2010_lodes_wzero_wdelta_%.dta: gravity_regression.do \
-	$(shell grep -o '../[inputem]*/[A-Za-z_0-9]*\.[a-z_0-9]*' gravity_regression.do) ../input/DGP_%.csv | $(OOPR)
+	$(shell grep -o '../[inputem]*/[A-Za-z_0-9]*\.[a-z_0-9]*' gravity_regression.do) ../input/DGP_%.csv | $(STATA_OOPR)
 	$(eval fourargs := $(subst _, ,$*))
 	$(STATA) $< $(fourargs)
 
@@ -62,7 +62,7 @@ include ../../generic.make
 	ln -sf $< $@
 ../input/DGP_%.csv : ../../monte_carlo_iid_dgp/output/DGP_%.csv | ../input
 	ln -sf $< $@
-../input/granular_programs.jl: ../../granular_equilibrium_solver/code/granular_programs.jl | ../input
+../input/finitemodel_programs.jl: ../../finitemodel_solver/code/finitemodel_programs.jl | ../input
 	ln -sf $< $@
 ../input/gravity_saveFE_time.do: ../../common_scripts/code/gravity_saveFE_time.do | ../input
 	ln -sf $< $@

@@ -13,6 +13,5 @@ There are two "types" of variables, "orig" and "dest".
 ## Input
 * `cont_(var)_puncertainty_#.csv`: The AHQ2 counterfactual predictions for the parameter uncertainty scenario #. 
 This output contains results for employment, rents, wages, and residents.
-* `simulation_distribution_{orig.csv|dest}_sigma_$(sigma).csv`: 
-stores summary statistics (mean, p5, p95) of the simulated number of residents and workers as well as the rents and wages
-for the origin and the destination tracts for a given value of sigma.
+* `simulation_distribution_{orig|dest}_sigma_$(sigma).csv`: 
+stores summary statistics (mean, p5, p95) of the simulated number of residents and workers as well as the rents and wages for the origin and the destination tracts for a given value of sigma.

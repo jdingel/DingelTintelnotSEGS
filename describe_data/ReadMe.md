@@ -17,4 +17,4 @@ Log files' treatment of `Inf`s and `NaN`s may vary across versions of Julia.
 ## Input
 * `Project.toml`, `Manifest.toml`: Required Julia environment.
 * `primtives_nyc2010_time.jld2`: Test `.jld2` file to describe. 
-* `cbm_meanutil_nested_0.75.jld2`: Test the describe function for `vector of vectors`. 
+* `baseline_equilibrium_outcomes%.jld2`: Contains baseline equilibrium outcomes. 

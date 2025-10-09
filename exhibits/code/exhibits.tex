@@ -1,0 +1,1327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[unicode=true,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=true]
+ {hyperref}
+\usepackage{verbatim}
+\usepackage{appendix}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage[authoryear]{natbib}
+\usepackage{booktabs} %Package with \toprule, \midrule, \bottomrule
+\usepackage{placeins} %Package with \FloatBarrier command
+%\usepackage{physics}
+\usepackage{datetime}
+\usepackage{epstopdf}
+\usepackage{changepage}
+\usepackage{subfig}
+\usepackage[normalem]{ulem} % Customize underline
+\captionsetup[subfigure]{labelformat=simple, labelsep=period}
+\renewcommand{\thesubfigure}{\Alph{subfigure}}
+\usepackage{etoolbox}  %Supports toggle commands
+\newcommand{\appendixpagenumbering}{ 
+	\pagenumbering{arabic}
+	\renewcommand{\thepage}{Appendix - \arabic{page}}
+}
+\newtoggle{12ptfont}
+\togglefalse{12ptfont}
+
+\hypersetup{
+	pdftex,
+    pdftitle={Spatial Economics for Granular Settings},
+    pdfauthor={Jonathan I. Dingel and Felix Tintelnot},
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=black,        % color of links to bibliography
+    urlcolor=blue           % color of external links
+}
+
+\hyphenpenalty=500
+
+% CUSTOM DEFINITIONS
+\urldef{\dingelemail}\url{j.dingel@columbia.edu}
+\urldef{\tintelnotemail}\url{felix.tintelnot@duke.edu}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem*{remark}{Remark}
+
+% IDENTIFYING INFORMATION
+\title{Spatial Economics for Granular Settings\thanks{
+	We thank four anonymous referees,
+	Rodrigo Ad\~{a}o, Gabriel Ahlfeldt, Treb Allen, Stephane Bonhomme, Kirill Borusyak, Victor Couture, Teresa Fort, Lars Hansen, Elhanan Helpman, Thomas Holmes, John Huizinga, Erik Hurst, Kyle Mangum, Yuhei Miyauchi, Eduardo Morales, Stephen Redding, Jordan Rosenthal-Kay, Esteban Rossi-Hansberg, Chris Severen, Sebastian Sotelo, Daniel Sturm, Miguel Zerecero, Oren Ziv, and
+	numerous conference and seminar participants for helpful feedback.
+	We are grateful to Junbiao Chen, Levi Crews, Gianna Fenaroli, Reigner Kane, Xianglong Kong, Daniil Iurchenko, Leran Qi, John Ruf, Isaac Shon, Ye Sun, Linghui Wu, Shijian Yang, and Mingjie Zhu for excellent research assistance.
+	Dingel thanks the James S. Kemper Foundation Faculty Research Fund at the University of Chicago Booth School of Business.
+	This work was completed in part with resources provided by the University of Chicago Research Computing Center
+	and Columbia University's Shared Research Computing Facility.
+	We gratefully acknowledge support from the National Science Foundation under grant number 2018609.
+	\dingelemail \ and \tintelnotemail
+}}
+\author{Jonathan I. Dingel
+\\ Columbia University, NBER, and CEPR
+\and
+Felix Tintelnot
+\\ Duke University, NBER, and CEPR}
+\date{\the\day \ \monthname[\the\month] \the\year}
+
+\newcommand\idiosyncraticphrase{idiosyncratic preference}
+
+\begin{document}
+\begin{figure}[hbt]
+\caption{Number of commuters between pairs of tracts in New York City}
+\label{fig:NYC:histogram}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.60\textwidth]{../input/histogram_NYC_2010_positive_w_shares.eps}
+\begin{minipage}{1.0\textwidth}
+{\footnotesize \textsc{Notes}: 
+This figure describes tract pairs in New York City by the number of individuals who reside in the origin tract and work in the destination tract in 2010 LODES data.
+The sample is restricted to the 15\% of tract pairs that have a strictly positive number of commuters.
+The blue histogram depicts the fraction of tract pairs reporting each number of commuters,
+for each value from 1 to 39 and values of 40 or greater.
+The black increasing step function depicts the cumulative share of commuters by the number of commuters between the pair of tracts.
+\input{../input/NYC_2010_number_tracts.tex}
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[hbt]
+\caption{Calibrated-shares procedure overfits in Monte Carlo simulations}
+\label{fig:montecarlo:MSEanddensities}
+\begin{center} \vspace{-4mm}
+\subfloat[Regression of true on predicted changes]{
+\includegraphics[width=.48\textwidth]{../input/slopes_intercepts_densities_continuum_labor_0_2.488905_1.09.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\includegraphics[width=.48\textwidth]{../input/MSE_ratio_histogram_continuum_labor_0_2.488905_1.09.eps}
+}
+\\
+\begin{minipage}{0.95\textwidth}
+{\footnotesize \textsc{Notes}:
+This figure depicts the regression coefficients and mean squared errors from 100 simulations in which $I = 2,488,905$,
+the data-generating process is the estimated covariates-based
+model of New York City in 2010,
+and the counterfactual change is a 9\% increase in productivity in one workplace tract.
+See Appendix~A.1 for a detailed description of the simulation procedure.
+``Covariates-based'' means estimating the covariates-based parameterization described in Section~3.2 using the simulated data.
+``Calibrated-shares'' means using the observed (simulated) shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
+In Panel~A, the densities for the covariates-based model are on the left vertical axis and the densities for the calibrated-shares procedure are on the right vertical axis.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[!h]
+\caption{Comparison of models' predictive performance across 83 events}
+\label{fig:event:83events:coefficientdensities}
+\begin{center}\vspace{-4mm}
+\subfloat[Regression of observed on predicted changes]{ 
+\includegraphics[width=.49\linewidth]{../input/cbm_sigma_4.0_vs_csp_sigma_4.0_kdensity_exhibit.eps}
+\label{fig:eventstudy_coef_cont_cs}
+}
+\subfloat[Ratio of models' prediction errors]{
+\includegraphics[width=.49\linewidth]{../input/cbm_sigma_4.0_vs_csp_sigma_4.0_histogram_exhibit.eps}\label{fig:mse_cont_cs}
+}\\ \vspace{-2mm}
+\subfloat[No extensive margin: Regression coefficients]{
+\includegraphics[width=.49\linewidth]{../input/cbm_deltainf_vs_csp_sigma_4.0_kdensity_exhibit.eps}
+\label{fig:eventstudy_coef_continfzero_cs}}
+\subfloat[No extensive margin: Ratio of prediction errors]{
+\includegraphics[width=.49\linewidth]{../input/cbm_deltainf_vs_csp_sigma_4.0_histogram_exhibit.eps}\label{fig:mse_cc}
+} \\
+\begin{minipage}{0.98\linewidth}{\footnotesize \textsc{Notes}: 
+``Calibrated-shares'' refers to using the observed shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
+``Covariates-based'' in Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} refers to the parameterization described in Section~3.2.
+``No extensive margin'' in Panels~\subref*{fig:eventstudy_coef_continfzero_cs} and \subref*{fig:mse_cc}
+retains only the intensive-margin predictions of the covariates-based model.
+This case uses 
+the covariates-based model's predictions for residence-workplace pairs with $\ell_{kn}>0$ in the 2010 data
+and 
+predicts zero change for pairs with $\ell_{kn}=0$ in the 2010 data.
+In Panel~\subref*{fig:eventstudy_coef_cont_cs},
+\input{../input/cbm_sigma_4.0_vs_csp_sigma_4.0_kdensity_notes.tex}
+In Panel~\subref*{fig:eventstudy_coef_continfzero_cs},
+\input{../input/cbm_deltainf_vs_csp_sigma_4.0_kdensity_notes.tex}
+Vertical lines depict the medians of the slope coefficient distributions.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[!tbh]
+\caption{Predictive performance across 83 events using low-rank approximation}
+\label{fig:event:83events:SVD:coefficientdensities}
+\begin{center}\vspace{-4mm}
+\subfloat[Regression of observed on predicted changes]{
+\label{fig:density_slope_SVD}
+\includegraphics[width=.45\textwidth]{../input/cbm_sigma_4.0_vs_svd_16_kdensity_exhibit.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\label{fig:hist_MSE_SVD}
+\includegraphics[width=.45\textwidth]{../input/cbm_sigma_4.0_vs_svd_16_histogram_exhibit.eps}
+}\\ \vspace{-2mm}
+\begin{minipage}{0.90\textwidth}{\footnotesize
+\textsc{Notes}:
+This figure depicts the predictive performance of 
+using an approximation of the commuting matrix in exact hat algebra.
+The approximation is derived from a rank-16 singular value decomposition of the observed commuting matrix,
+as described in Appendix~B.4.
+The covariates-based model is the same as in Figure~\ref{fig:event:83events:coefficientdensities}.
+Panel~\subref*{fig:density_slope_SVD} depicts the distributions of slope and intercept coefficients, and the vertical lines denote the median slope coefficients.
+\par}\end{minipage}\\ \vspace{4mm}
+\end{center}
+\end{figure}
+\begin{figure}[!h]
+\caption{Predictive performance of the rank-1 IFE specification across 83 events}
+\label{fig:event:83events:IFE:coefficientdensities}
+\begin{center}\vspace{-4mm}
+\subfloat[Regression of observed on predicted changes]{
+\label{fig:density_slope_IFE}
+\includegraphics[width=.45\textwidth]{../input/cbm_sigma_4.0_vs_ife_1_kdensity_exhibit.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\label{fig:hist_MSE_IFE}
+\includegraphics[width=.45\textwidth]{../input/cbm_sigma_4.0_vs_ife_1_histogram_exhibit.eps}
+}\\ \vspace{-2mm}
+\begin{minipage}{0.90\textwidth}{\footnotesize \textsc{Notes}: 
+This figure summarizes the predictive performance of the covariates-based model 
+and the rank-1 IFE specification.
+Panel~\subref*{fig:density_slope_IFE} depicts the distributions of slope coefficients, and the vertical lines denote the median slope coefficients.
+\par}\end{minipage}\\ \vspace{4mm}
+\end{center}
+\end{figure}
+\begin{table}[hbt]
+\caption{Commuting elasticity estimates}
+\label{tab:elasticity}
+\begin{center}
+\vspace{-5mm}
+\input{../input/gravity_comparisons_time_NYC_impute_simple.tex}
+\begin{minipage}{1.0\textwidth}
+{\footnotesize \textsc{Notes}: 
+All specifications include residence fixed effects and workplace fixed effects.
+The ``PPML/MLE'' column presents the results from maximum likelihood estimation of equation~\eqref{eq:loglikelihood}.
+The ``OLS'' column presents the results of estimating the log version of equation~\eqref{eqn:cont_laborallocation} by ordinary least squares, omitting observations in which $\ell_{kn}=0$.
+The model-fit statistic is the pseudo-$R^2$ for MLE and $R^2$ for OLS.
+We report the PPML standard errors (clustered by $k$ and by $n$), which are larger than the logit MLE standard errors associated with maximizing equation~\eqref{eq:loglikelihood}.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[tbh]
+\caption{Calibrated-shares procedure's finite-sample performance}
+\label{table:montecarlo:cs_lambdazero:maintext}
+\vspace{-4mm}
+\begin{center}
+A. Regressand is continuum change in commuters\\
+\resizebox{\textwidth}{!}{%
+\input{../input/sumstats_continuum_labor_0_1.09.tex}
+}
+B. Regressand is finite-sample change in commuters\\
+\resizebox{\textwidth}{!}{%
+\input{../input/sumstats_iid_labor_0_1.09.tex}
+}
+\iftoggle{12ptfont}{\begin{minipage}{1.0\textwidth}}{\begin{minipage}{0.95\textwidth}}
+{\footnotesize \textsc{Notes}:
+This table reports the average values of the slope coefficient, intercept coefficient, and mean squared error from 100 simulations as we vary $I$, the number of individuals in the simulated economy.
+The column titles denote the number of individuals in millions.
+The ``2.5'' million case corresponds to $I = 2,488,905$,
+which is the number of individuals who reside and work in New York City in the 2010 LODES data.
+In Panel~A, the regressand is the change in commuters with a continuum of individuals.
+This change does not vary across simulations.
+In Panel~B, the regressand is the simulation-specific change in commuters from a realization drawn from the model using pre-shock parameter values to a realization drawn from the model using post-shock parameter values.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\begin{equation}\label{eq:loglikelihood}
+\mathcal{L}
+\equiv
+\sum_{k,n} \ell_{kn} \ln \left[\mathbb{P}(U_{kn}^{i} > U_{k'n'}^{i} \ \forall k'n' \neq kn)\right] 
+=
+\sum_{k,n} \ell_{kn} \ln \left[
+\frac
+{{w}_{n}^\epsilon \left({r}_{k}^\alpha  \bar{\delta}_{kn}\right)^{-\epsilon}}
+{\sum_{k',n'} {w}_{n'}^\epsilon \left({r}_{k'}^\alpha  \bar{\delta}_{k'n'}\right)^{-\epsilon}}
+\right]
+.\end{equation}
+\begin{equation} \label{eqn:utility:beliefs}
+\tilde{U}_{kn}^{i} = 
+\underbrace{\epsilon \ln\left({\tilde{w}_n}/\left({\tilde{P}^{1-\alpha}\tilde{r}_{k}^{\alpha} \delta_{kn}}\right)\right)}_{\equiv \tilde{U}_{kn}} + \nu_{kn}^i
+,
+\end{equation}
+\begin{equation}\label{eq:gran_loglikelihood}
+\mathcal{L}
+\equiv
+\sum_{k,n} \ell_{kn} \ln \left[\mathbb{P}(\tilde{U}_{kn}^{i} > \tilde{U}_{k'n'}^{i} \ \forall k'n' \neq kn)\right]
+=
+\sum_{k,n} \ell_{kn} \ln \left[
+\frac
+{\tilde{w}_{n}^\epsilon \left(\tilde{r}_{k}^\alpha  \bar{\delta}_{kn}\right)^{-\epsilon}}
+{\sum_{k',n'} \tilde{w}_{n'}^\epsilon \left(\tilde{r}_{k'}^\alpha  \bar{\delta}_{k'n'}\right)^{-\epsilon}}
+\right]
+.\end{equation}
+\begin{equation}\label{eqn:cont_laborallocation}
+\frac{\ell_{kn}}{L}
+=
+\frac
+{w_{n}^\epsilon \left(r_{k}^\alpha  \delta_{kn}\right)^{-\epsilon}}
+{\sum_{k',n'}w_{n'}^\epsilon \left(r_{k'}^\alpha  \delta_{k'n'}\right)^{-\epsilon}}
+.
+\end{equation}
+\begin{align}
+\hat{w}_{n}
+&=
+\hat{A}_n
+\left(\sum_{k} \hat{y}_{kn}\frac{y_{kn}}{\sum_{k'} y_{k'n}}\right)^{\frac{1}{1-\sigma}}
+\hat{P}
+\hat{Y}^{\frac{1}{\sigma-1}}
+\label{eqn:exacthatalgebra:wages}
+\\
+\hat{r}_{k}
+&=
+\hat{T}_{k}^{-1} \sum_{n}\hat{y}_{kn}\frac{y_{kn}}{\sum_{n'}y_{kn'}}
+\label{eqn:exacthatalgebra:rents}
+\\
+\hat{\ell}_{kn} 
+&=
+\frac{\hat{w}_{n}^{\epsilon}\left(\hat{r}_{k}^{\alpha} \hat{\bar{\delta}}_{kn}\hat{ \lambda}_{kn} \right)^{-\epsilon}}{\sum_{k',n'} \hat{w}_{n'}^{\epsilon}\left(\hat{r}_{k'}^{\alpha} \hat{\bar{\delta}}_{k'n'}\hat{ \lambda}_{k'n'} \right)^{-\epsilon} \frac{\ell_{k'n'}}{L}} \qquad \text{ if } \ell_{kn} > 0
+\label{eqn:exacthatalgebra:laborallocation}
+.\end{align}
+\begin{figure}[hbt]
+\caption{Amazon HQ2 counterfactual change in residents}
+\begin{center}\vspace{-4mm}
+\subfloat[Residents working in HQ2 tract]{ 
+\includegraphics[width=.33\linewidth]{../input/map_res2010.png}
+\label{fig:NYC:AmazonHQ2:origins2010}}
+\subfloat[Covariates-based predictions]{ 
+\includegraphics[width=.33\linewidth]{../input/map_cont_reschange.png}\label{fig:NYC:AmazonHQ2:CBM:residentchange}
+}
+\subfloat[Calibrated-shares predictions]{
+\includegraphics[width=.33\linewidth]{../input/map_cs_changeres.png}\label{fig:NYC:AmazonHQ2:CSP:residentchange}
+}\\
+\begin{minipage}{\textwidth}{\footnotesize
+\textsc{Notes}:
+Panel~\subref*{fig:NYC:AmazonHQ2:origins2010} depicts the number of residents
+in each tract who work in the treated Long Island City tract in the 2010 LODES data.
+The legend of Panel~\subref*{fig:NYC:AmazonHQ2:origins2010} reports
+the percentiles corresponding to the integer number of residents,
+excluding the treatment tract.
+Panels~\subref*{fig:NYC:AmazonHQ2:CBM:residentchange} and \subref*{fig:NYC:AmazonHQ2:CSP:residentchange} depict changes in the number of residents predicted by the covariates-based model and calibrated-shares procedure, respectively.
+The legend percentile cutoffs in Panels~\subref*{fig:NYC:AmazonHQ2:CBM:residentchange} and \subref*{fig:NYC:AmazonHQ2:CSP:residentchange} correspond to those in Panel~\subref*{fig:NYC:AmazonHQ2:origins2010}.
+The covariates-based predictions for residents describe both the continuum model and the model with finite individuals
+because the change in the former equals the expected change in the latter.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[bth] 
+\caption{Predicted changes in rents}
+\label{fig:AHQ2:rentchange}
+\begin{center}\vspace{-5mm}
+\subfloat[Covariates-based: Continuum]{
+\includegraphics[width=.33\linewidth]{../input/map_cont_change_realr.png}
+\label{fig:AHQ2:rentchange:CBM}}
+\subfloat[Covariates-based: Finite]{
+\includegraphics[width=.33\linewidth]{../input/map_gu_realrchange_fixednu_sigma_4.0.png}
+\label{fig:AHQ2:rentchange:CBM:finitemodel}}
+\subfloat[Calibrated shares]{
+\includegraphics[width=.33\linewidth]{../input/map_cs_hat_realr.png}
+\label{fig:AHQ2:rentchange:CSP}}\\
+\begin{minipage}{0.90\textwidth}{\footnotesize
+\textsc{Notes}:
+These maps depict percent changes in rents, $(\hat{r}_{k}/\hat{P} - 1) \times 100$.
+Panel~\subref*{fig:AHQ2:rentchange:CBM}
+depicts the change in the covariates-based continuum model.
+Panel~\subref*{fig:AHQ2:rentchange:CBM:finitemodel}
+depicts the mean change across 100 simulations of the model with finite individuals.
+Panel~\subref*{fig:AHQ2:rentchange:CSP}
+depicts each tract's predicted rent change using the calibrated-shares procedure.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[h!]
+\caption{Variation in counterfactual changes: Idiosyncrasies vs. parameter uncertainty}
+\label{fig:NYC:AmazonHQ2:parameteruncertainty}
+\begin{center}\vspace{-4mm}
+\subfloat[Changes in residents]{ 
+\includegraphics[width=.49\linewidth]{../input/fixednu_puncertainty_scatter_res.eps}
+\label{fig:AHQ2:puncertainty:res}\label{fig:fixednu:g_res_simulation}}
+\subfloat[Changes in workers]{
+\includegraphics[width=.49\linewidth]{../input/fixednu_puncertainty_scatter_emp.eps}
+\label{fig:AHQ2:puncertainty:emp}\label{fig:fixednu:g_emp_simulation}}\\ \vspace{-2mm}
+\subfloat[Changes in rents]{
+\includegraphics[width=.49\linewidth]{../input/fixednu_puncertainty_scatter_rent.eps}
+\label{fig:AHQ2:puncertainty:realrent}\label{fig:fixednu:g_realrent}}
+\subfloat[Changes in wages]{
+\includegraphics[width=.49\linewidth]{../input/fixednu_puncertainty_scatter_wage.eps}
+\label{fig:AHQ2:puncertainty:realwage}\label{fig:fixednu:g_realwage}}\\ \vspace{-2mm}
+\begin{minipage}{0.96\textwidth}{\footnotesize
+\textsc{Notes}:
+These plots depict variation in counterfactual changes 
+induced by individual idiosyncrasies in the model with a finite number of individuals
+alongside
+variation attributable to parameter uncertainty about $\{A_n\}$, $\{T_k\}$, and $\epsilon$ in the covariates-based continuum model.
+We summarize the former by plotting the 5\textsuperscript{th} and 95\textsuperscript{th} percentiles of predicted changes in quantities and prices across 100 simulations of the model with a finite number of individuals.
+In Panels~\subref*{fig:fixednu:g_res_simulation}, \subref*{fig:fixednu:g_emp_simulation}, \subref*{fig:fixednu:g_realrent}, and \subref*{fig:fixednu:g_realwage},
+the horizontal axes correspond to the values depicted in 
+Figures~\ref{fig:NYC:AmazonHQ2:CBM:residentchange}, \ref{fig:NYC:AmazonHQ2:CBM:workerchange}, \ref{fig:AHQ2:rentchange:CBM:finitemodel}, and \ref{fig:AHQ2:wagechanges:CBM:finitemodel}, respectively.
+Panels \subref*{fig:AHQ2:puncertainty:emp} and \subref*{fig:AHQ2:puncertainty:realwage} exclude the Amazon HQ2 workplace tract.
+In Panel~\subref*{fig:fixednu:g_res_simulation},
+the 90\% confidence interval for the change in residents includes zero for all tracts.
+In Panel~\subref*{fig:fixednu:g_emp_simulation},
+\input{../input/outlier_note_gu_emp_fixednu_sigma_4.0.tex}\unskip,
+and
+\input{../input/report_gu_emp_fixednu_sigma_4.0.tex}\unskip\
+The 90\% confidence interval for the change in employment for the Amazon workplace tract is \input{../input/AHQ2_d_emp_p5_sigma_4.0.tex}\unskip\ to \input{../input/AHQ2_d_emp_p95_sigma_4.0.tex}\unskip.
+In Panel~\subref*{fig:fixednu:g_realrent},
+real rent changes are $(\hat{r}_{k}/\hat{P} - 1) \times 100$,
+and
+\input{../input/report_gu_realr_fixednu_sigma_4.0.tex}\unskip\
+In Panel~\subref*{fig:fixednu:g_realwage},
+the real wage changes are $(\hat{w}_{n}/\hat{P} - 1) \times 100$,
+and 
+\input{../input/report_gu_realw_fixednu_sigma_4.0.tex}
+We quantify parameter uncertainty by producing 100 counterfactual predictions by
+sampling with replacement 2,488,905 individuals from the observed commuting matrix 100 times.
+For each of these 100 samples,
+we estimate the covariates-based continuum model and compute its counterfactual predictions.
+The plots depict the 5\textsuperscript{th} and 95\textsuperscript{th} percentiles of predicted changes in quantities and prices across these 100 bootstrap samples.
+The variation attributable to parameter uncertainty is considerably smaller 
+than 
+the variation attributable to individual idiosyncrasies:
+the bootstrap 5\textsuperscript{th} and 95\textsuperscript{th} percentiles are almost indistinguishable.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\clearpage \numberwithin{figure}{section} \numberwithin{table}{section} \appendix
+\section{Monte Carlo simulations}\label{sec:appendix:counterfacutals}
+\begin{figure}[bthp]
+\caption{Monte Carlo: Calibrated-shares procedure predict rents poorly}
+\label{fig:montecarlo:MSEanddensities:rents}
+\begin{center} \vspace{-4mm}
+\subfloat[Regression of true on predicted changes]{
+\includegraphics[width=.48\textwidth]{../input/slopes_intercepts_densities_continuum_prices_0_2.488905_1.09.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\includegraphics[width=.48\textwidth]{../input/MSE_ratio_histogram_continuum_prices_0_2.488905_1.09.eps}
+}
+\\
+\begin{minipage}{\textwidth}
+{\footnotesize \textsc{Notes}:
+This figure describes predicted rent changes from the same simulations that produced the predicted commuter changes in 
+Figure~\ref{fig:montecarlo:MSEanddensities} and Panel~A of Table~\ref{table:montecarlo:cs_lambdazero:maintext}.
+This figure depicts the regression coefficients and mean squared errors from 100 simulations in which $I = 2,488,905$,
+the data-generating process is the estimated covariates-based
+model of New York City in 2010,
+and the counterfactual change is an 9\% increase in productivity in one workplace tract.
+The predicted change in real rents is compared to the continuum-model change in real rents.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[hbt]
+\caption{Calibrated-shares procedure overfits in finite-sample simulations}
+\label{fig:montecarlo:MSEanddensities:finitesample}
+\begin{center} \vspace{-4mm}
+\subfloat[Regression of finite-sample changes on predicted changes]{
+\includegraphics[width=.48\textwidth]{../input/slopes_intercepts_densities_iid_labor_0_2.488905_1.09.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\includegraphics[width=.48\textwidth]{../input/MSE_ratio_histogram_iid_labor_0_2.488905_1.09.eps}
+}
+\vspace{-1em}
+\begin{minipage}{0.95\textwidth}
+{\footnotesize \textsc{Notes}:
+This figure depicts the regression coefficients and MSEs from 100 simulations in which $I = 2,488,905$,
+the data-generating process is 
+a finite-sample realization from the estimated covariates-based model of New York City in 2010,
+and
+a finite-sample realization from that model with a 9\% increase in productivity in one workplace tract.
+``Covariates-based'' means applying the parameterization described in Section~3.2 to the simulated data.
+``Calibrated-shares'' means using the observed (simulated) shares in the exact hat algebra defined by equations~\eqref{eqn:exacthatalgebra:wages}--\eqref{eqn:exacthatalgebra:laborallocation}.
+\par}
+\end{minipage}
+\end{center}
+\vspace{-2em}
+\end{figure}
+\begin{figure}[hbt]
+\caption{Calibrated-shares procedure performs poorly in fixed-$\mathbf{\nu}^{I}$ simulations}
+\label{fig:appendix:mc_fixednu:slope_intercept_mse}
+\begin{center} \vspace{-4mm}
+\subfloat[Regression of observed on predicted changes]{
+\includegraphics[width=.5\textwidth]{../input/montecarlo_slopes_intercepts_densities_1.09_fixednu.eps}
+}
+\subfloat[Ratio of models' prediction errors]{
+\includegraphics[width=.5\textwidth]{../input/montecarlo_MSE_ratio_histogram_1.09_fixednu.eps}
+}
+\vspace{-1em}
+\begin{minipage}{0.95\textwidth}
+{\footnotesize \textsc{Notes}:
+This figure depicts the regression coefficients and MSEs from 100 simulations in which $I = 2,488,905$,
+the data-generating process is the estimated covariates-based
+model of New York City in 2010 with fixed idiosyncratic preferences $\mathbf{\nu}^{I}$,
+and the counterfactual change is a 9\% increase in productivity in one workplace tract.
+\par}
+\end{minipage}
+\end{center}
+\vspace{-2em}
+\end{figure}
+\begin{table}[bthp]
+\caption{Calibrated-shares procedure's finite-sample performance predicting rent changes}\label{table:montecarlo:cs_lambdazero:rents}
+\resizebox{\textwidth}{!}{\input{../input/sumstats_continuum_prices_0_1.09.tex}}
+\\ 
+\begin{minipage}{\textwidth}
+{\footnotesize \textsc{Notes}:
+This table describes predicted rent changes from the same simulations that produced the predicted commuter changes in Panel~A of Table~\ref{table:montecarlo:cs_lambdazero:maintext}.
+\par}
+\end{minipage}
+\end{table}
+\begin{table}[p]
+\caption{Monte Carlo simulations with $\lambda_{kn} \neq 1$: Regressand is continuum change}
+\label{table:montecarlo:unobservables:continuum:appendixtable}
+\vspace{-5mm}
+\begin{center}
+\iftoggle{12ptfont}{\footnotesize}{}
+\resizebox{0.67\textheight}{!}{%
+\input{../input/monte_carlo_result_mean_continuum.tex}%
+}
+\iftoggle{12ptfont}{\begin{minipage}{0.93\textwidth}}{\begin{minipage}{0.98\textwidth}}
+{\footnotesize \textsc{Notes}:
+This table reports the mean outcomes across 100 simulated event studies for both the covariates-based model and the calibrated-shares procedure.
+The data-generating process is the covariates-based model estimated on data for New York City in 2010 augmented by an unobserved component of commuting costs of magnitude $\Lambda$ (see text).
+The regressand is the continuum change in commuters.
+The value of $I$ is stated in millions of individuals.
+The value labeled ``2.5'' million is in fact $I = 2,488,905$.
+The $\Lambda = 0$ results also appear in Panel~A of Table~\ref{table:montecarlo:cs_lambdazero:maintext}.
+\par}\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[p]
+\caption{Monte Carlo simulations with $\lambda_{kn} \neq 1$: Regressand is finite-sample change}
+\label{table:montecarlo:unobservables:iid:appendixtable}
+\vspace{-5mm}
+\begin{center}
+\iftoggle{12ptfont}{\footnotesize}{}
+\resizebox{0.67\textheight}{!}{
+\input{../input/monte_carlo_result_mean.tex}
+}
+\iftoggle{12ptfont}{\begin{minipage}{0.96\textwidth}}{\begin{minipage}{0.98\textwidth}}
+{\footnotesize \textsc{Notes}:
+This table reports the mean outcomes across 100 simulated event studies for both the covariates-based model and the calibrated-shares procedure.
+The data-generating process is the covariates-based model estimated on data for New York City in 2010 augmented by an unobserved component of commuting costs of magnitude $\Lambda$ (see text).
+The regressand is the simulation-specific change in commuters from a realization drawn from the model using pre-shock parameter values to a realization drawn from the model using post-shock parameter values.
+The value of $I$ is stated in millions of individuals.
+The value labeled ``2.5'' million is in fact $I = 2,488,905$.
+The $\Lambda = 0$ results also appear in Panel~B of Table~\ref{table:montecarlo:cs_lambdazero:maintext}.
+\par}\end{minipage}
+\end{center}
+\end{table}
+\section{Event studies}\label{sec:appendix:eventstudies}
+\begin{figure}[!hbt]
+\caption{Employment in two of the event-study tracts}
+\label{fig:eventstudies:employmentseries}
+\vspace{-6mm}
+\begin{center}
+\includegraphics[width=0.42\textwidth]{../input/tract_employmentcountsOD_36061005800.eps}
+\includegraphics[width=0.42\textwidth]{../input/tract_employmentcountsOD_36061008300.eps}
+\begin{minipage}{0.90\textwidth}
+{\footnotesize \textsc{Notes}:
+\input{../input/tract_employmentcountsOD_notes.tex}
+\par}
+\end{minipage}
+\end{center}
+\vspace{-2em}
+\end{figure}
+\begin{figure}[!h]
+\caption{Models' predictive performance with temporal and geographic aggregation}
+\label{fig:event:83events:pooled:coefficientdensities}
+\label{fig:event:83events:NTAs:coefficientdensities}
+\begin{center}\vspace{-4mm}
+\subfloat[Temporal aggregation: Regressions]{
+\includegraphics[width=.45\textwidth]{../input/cbm_pool_2008_2010_vs_csp_pool_2008_2010_kdensity_exhibit.eps}\label{fig:83events:temporalagg:density_slope}
+}
+\subfloat[Temporal aggregation: Prediction errors]{
+\includegraphics[width=.45\textwidth]{../input/cbm_pool_2008_2010_vs_csp_pool_2008_2010_histogram_exhibit.eps}\label{fig:83events:temporalagg:MSEs}
+}\\ 
+\subfloat[Geographic aggregation: Regressions]{
+\includegraphics[width=.45\textwidth]{../input/density_slope_NTA_cont_cs.eps}\label{fig:83events:geoagg:density_slope}
+}
+\subfloat[Geographic aggregation: Prediction errors]{
+\includegraphics[width=.45\textwidth]{../input/MSE_histogram_cont_cs_NTA.eps}\label{fig:83events:geoagg:MSEs}
+}\\
+\vspace{-2mm}
+\begin{minipage}{0.90\textwidth}{\footnotesize
+\textsc{Notes}:
+This figure contrasts the covariates-based model and calibrated-shares procedure's predictions for 83 tract-level employment booms
+when employing temporal aggregation or geographic aggregation.
+Panels~\subref*{fig:83events:temporalagg:density_slope} and~\subref*{fig:83events:temporalagg:MSEs}
+depict results when using baseline data for 2008-2010 instead of only 2010.
+Panels~\subref*{fig:83events:geoagg:density_slope} and~\subref*{fig:83events:geoagg:MSEs}
+depict predictive performance after aggregating the tract-level predictions underlying Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} of Figure~\ref{fig:event:83events:coefficientdensities}
+up to 195 Neighborhood Tabulation Areas.
+We sum the predicted change in commuters to the booming workplace tract across all residential tracts in an NTA.
+In panel~\subref*{fig:83events:temporalagg:density_slope},
+\input{../input/cbm_pool_2008_2010_vs_csp_pool_2008_2010_kdensity_notes.tex}
+In Panel~\subref*{fig:83events:geoagg:density_slope},
+only the slope coefficients are depicted.
+Vertical lines depict the medians of the slope coefficient distributions.
+\par}\end{minipage}
+\end{center}
+\vspace{-2em}
+\end{figure}
+\begin{figure}[tbh]
+    \caption{Models' predictive performance across 35 NTA-level employment booms}
+    \label{fig:event:35events:NTAs:coefficientdensities}
+    \begin{center}\vspace{-4mm}
+    \subfloat[Regression of observed on predicted changes]{
+        \includegraphics[width=0.49\textwidth]{../input/cbm_nta_vs_csp_nta_kdensity_exhibit.eps}\label{fig:density_slope_NTA_aggfit}
+    }
+    \subfloat[Ratio of models' prediction errors]{
+        \includegraphics[width=0.49\textwidth]{../input/cbm_nta_vs_csp_nta_histogram_exhibit.eps}
+    }\\
+    \begin{minipage}{0.90\textwidth}{\footnotesize
+        \textsc{Notes}:
+        This figure depicts predictive performance when fitting both approaches using data aggregated up to the 195 Neighborhood Tabulation Areas defined by the New York City Department of City Planning.
+        In panel A,
+        \input{../input/cbm_nta_vs_csp_nta_kdensity_notes.tex}%
+        Panel~\subref*{fig:density_slope_NTA_aggfit} depicts the distributions of slope coefficients, and the vertical lines denote the median slope coefficients.
+        \par}\end{minipage}\\ 
+    \end{center}
+    \vspace{-2em}
+\end{figure}
+\begin{figure}[h!]
+\vspace{-3mm}
+\caption{Approximations of the commuting matrix}
+\label{fig:commuting_matrices_approx}
+\vspace{-7.5mm}
+\begin{center}
+\subfloat[Observed commuting matrix]{
+\includegraphics[width=.3\textwidth]{../input/lodes_visualization.png}
+}
+\subfloat[Fitted values, CBM]{
+\includegraphics[width=.3\textwidth]{../input/lodes_cbm_visualization.png}
+}
+\subfloat[Rank-5 SVD]{
+\includegraphics[width=.3\textwidth]{../input/lodes_svd_5_visualization.png}
+}\\
+\subfloat[Rank-16 SVD]{
+\includegraphics[width=.3\textwidth]{../input/lodes_svd_16_visualization.png}
+}
+\subfloat[Rank-200 SVD]{
+\includegraphics[width=.3\textwidth]{../input/lodes_svd_200_visualization.png}
+}
+\subfloat[Fitted values, IFE rank 1]{
+\includegraphics[width=.3\textwidth]{../input/lodes_ife_1_visualization.png}
+}
+\\
+\vspace{-6.5mm}
+\subfloat{
+\includegraphics[width=.3\textwidth]{../input/lodes_visualizations_legend.png}
+}
+\\
+\vspace{-5mm}
+\begin{minipage}{1.0\textwidth}
+{\footnotesize \textsc{Notes}: 
+This figure depicts
+the observed 2010 commuting matrix,
+the fitted covariates-based model (CBM) of $\ell_{kn}$,
+approximations derived from rank-5, rank-16, and rank-200 singular value decompositions,
+and
+a rank-1 interactive-fixed-effects specification.
+Rows and columns are ordered by FIPS codes,
+so that all but eight adjacent entries are in the same county.
+}
+\end{minipage}
+\end{center}
+\vspace{-2em}
+\end{figure}
+\begin{figure}[hbt]
+\caption{Scree plot (ordered singular values) for NYC 2010 commuting matrix}
+\label{fig:SVD:scree}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../input/lodes_svd_normalized_scree_25.png}
+\begin{minipage}{1.0\textwidth}
+{\footnotesize \textsc{Notes}: 
+This figure shows the magnitude of successive singular values for the NYC 2010 commuting matrix. The dashed line indicates the threshold of 0.5\% of the sum of the singular values.}
+\end{minipage}
+\end{center}
+\vspace{-1.75em}
+\end{figure}
+\begin{table}[h!]
+\caption{Summary of SVD Monte Carlo and event study results by rank}
+\label{tab:svd:performance}
+\vspace{-1.5em}
+\begin{center}
+\resizebox{\textwidth}{!}{%
+    \input{../input/monte_carlo_svd_performance.tex}%
+}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}:
+This table reports the predictive performance, measured by the average values of the regression slope and intercept coefficients and MSE, using SVD approximations of various ranks across two cases: 
+a) 100 Monte Carlo simulations, with each drawn from the parameterized continuum model with a 9\% productivity shock to the tract containing 200 Fifth Avenue, 
+where the performance is evaluated relative to the continuum model's predictions; 
+and b) the 83 event studies examined in Section~3.5.
+\par}\end{minipage}
+\end{center}
+\vspace{-1.5em}
+\end{table}
+\begin{table}[h!]
+\caption{Summary of NNMF event study results by rank}
+\label{tab:nnmf:summary}
+\vspace{-1.5em}
+\begin{center}
+\input{../input/eventstudy_nnmf_performance.tex}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}:
+This table reports the predictive performance, as measured by the average values of the regression slope and intercept coefficients and MSE, across the 83 event studies examined in Section~3.5 using various ranks of NNMF low-rank approximated commuting matrices.
+\par}\end{minipage}
+\end{center}
+\vspace{-1.5em}
+\end{table}
+\begin{table}[h!]
+    \caption{Percentage (\%) of approximated commuting matrix entries equal to zero}
+    \label{tab:svd:zeros}
+    \vspace{-1.5em}
+    \begin{center}
+    \input{../input/svd_zeros.tex}
+    \begin{minipage}{0.98\textwidth}
+    {\footnotesize \textsc{Notes}:
+    This table reports the proportion of entries in the approximated commuting matrices, across ranks, that are equal to zero. 
+    These values are shown for both the SVD and the NNMF procedures, though we omit high-rank approximations via NNMF because of computational burden.
+    The SVD procedure results in many more zeros, particularly for larger ranks, than the NNMF, largely due to the generation of negative values by SVD prior to our truncating them to zero.
+    \par}\end{minipage}
+    \end{center}
+    \vspace{-1.5em}
+\end{table}
+\begin{figure}[!hbt] 
+    \caption{Event study performance: varying factor structure rank, IFE}
+    \label{fig:ifes:es_performance}
+    \begin{center}\vspace{-4mm}
+    \subfloat[Rank 2]{ 
+    \includegraphics[width=.45\linewidth]{../input/cbm_sigma_4.0_vs_ife_2_kdensity_exhibit.eps}
+    \includegraphics[width=.45\linewidth]{../input/cbm_sigma_4.0_vs_ife_2_histogram_exhibit.eps}
+    \label{fig:ifes:es_rank2}}\\
+    \subfloat[Rank 3]{
+    \includegraphics[width=.45\linewidth]{../input/cbm_sigma_4.0_vs_ife_3_kdensity_exhibit.eps}
+    \includegraphics[width=.45\linewidth]{../input/cbm_sigma_4.0_vs_ife_3_histogram_exhibit.eps}
+    \label{fig:ifes:es_rank3}}
+    \end{center}
+    \begin{minipage}{0.95\textwidth}
+    {\footnotesize \textsc{Notes}: This figure summarizes the predictive performance of the covariates-based model and the ranks 2 and 3 IFE specifications, analogous to Figure~\ref{fig:event:83events:IFE:coefficientdensities}. 
+    Panel A depicts the distributions of slope coefficients, and the vertical lines denote the median slope coefficients.}
+    \end{minipage}
+    \vspace{-1.5em}
+    \end{figure}
+\begin{figure}[h!]
+    \caption{Distributions of $\chi^2$ and MSE test statistics}
+    \begin{center}\vspace{-4mm}
+    \subfloat[Distributions of $\chi^2$ test statistics]{ 
+        \includegraphics[width=.48\linewidth]{../input/Chi2_parametric_dist.eps}
+        \label{fig:chi2teststat:distribution}
+    }
+    \subfloat[Distributions of MSE test statistics]{ 
+        \includegraphics[width=.48\linewidth]{../input/MSE_parametric_dist.eps}
+        \label{fig:MSEteststat:distribution}
+    }
+    \\ \vspace{-2mm}
+    \begin{minipage}{1.0\textwidth}{\footnotesize
+    \textsc{Notes}:
+    The test statistic in the left panel is $\chi^2= \sum_{kn}\frac{(\ell_{kn}^{\text{obs}}- \mathbb{E}[\ell_{kn}])^2}{\mathbb{E}[\ell_{kn}]}$,
+    where $\ell_{kn}^{\text{obs}}$ is the number of commuters from $k$ to $n$ and 
+    $\mathbb{E}[\ell_{kn}]$ is the expected value of commuters from $k$ to $n$
+    (given by $\ell_{kn}$ in the continuum model's equation~\eqref{eqn:cont_laborallocation}).
+    We depict the distributions between their 0.5th and 99.5th percentiles.
+    The test statistics using the commuter counts in the 2010 LODES data are
+    \input{../input/Chi2_stat_value_cbmfit.tex}\unskip,
+    \input{../input/Chi2_stat_value_ifefit_1.tex}\unskip,
+    \input{../input/Chi2_stat_value_ifefit_2.tex}\unskip,
+    and
+    \input{../input/Chi2_stat_value_ifefit_3.tex}\unskip\
+    for the CBM, rank-1 IFE, rank-2 IFE, and rank-3 IFE, respectively.
+    The test statistic in the right panel is $\text{MSE} = \frac{1}{K \times N} \sum_{kn} (\ell_{kn}^{\text{obs}} - \mathbb{E}[\ell_{kn}])^2$,
+    where $\ell_{kn}^{\text{obs}}$ is the number of commuters from $k$ to $n$,
+    $\mathbb{E}[\ell_{kn}]$ is the expected value of commuters,
+    $K$ is number of residence tracts,
+    and $N$ is the number of workplace tracts.
+    We depict the distributions between their 0.5th and 99.5th percentiles.
+    The test statistics using the commuter counts in the 2010 LODES data are
+    \input{../input/MSE_stat_value_svdfit_16.tex}\unskip,
+    \input{../input/MSE_stat_value_svdfit_100.tex}\unskip,
+    \input{../input/MSE_stat_value_svdfit_200.tex}\unskip,
+    and
+    \input{../input/MSE_stat_value_svdfit_500.tex}\unskip\
+    for the rank-16, rank-100, rank-200, and rank-500 singular value decompositions, respectively.
+    \par}\end{minipage}\\ 
+    \end{center}\vspace{-6mm}
+\end{figure}
+\begin{table}[hbt]
+\caption{Commuting elasticity estimates from IFE specification}
+\label{tab:elasticity:IFE}
+\begin{center}
+\vspace{-5mm}
+\input{../input/gravity_time_NYC_IFE.tex}
+\begin{minipage}{0.95\textwidth}
+{\footnotesize \textsc{Notes}: 
+All specifications include residence fixed effects and workplace fixed effects.
+The columns under  ``MLE''  present the results from the maximum likelihood estimation described in the text, with \(R\) denoting the interactive fixed effects factor structure rank.
+The ``OLS'' column presents the results of estimating the log version of equation~\eqref{eqn:cont_laborallocation} by ordinary least squares, omitting observations where $\ell_{kn}=0$.
+The model-fit statistic is pseudo-$R^2$ for MLE and $R^2$ for OLS.}
+\end{minipage}
+\end{center}
+\vspace{-1.5em}
+\end{table}
+\begin{figure}[!h]
+  \caption{Comparison of methods' predictive performance with nested-logit $\nu^{i}$}
+  \label{fig:event:83events:coefficientdensities:nestedlogit}
+  \begin{center}\vspace{-4mm}
+  \subfloat[$\zeta = 0.75$: Regression coefficients]{ 
+  \includegraphics[width=.49\linewidth]{../input/cbm_ntaorigin_0.75_vs_csp_ntaorigin_0.75_kdensity_exhibit.eps}
+  \label{fig:eventstudy_coef_cont_cs_nestedlogit_0.75}
+  }
+  \subfloat[$\zeta = 0.75$: Ratio of prediction errors]{
+  \includegraphics[width=.49\linewidth]{../input/cbm_ntaorigin_0.75_vs_csp_ntaorigin_0.75_histogram_exhibit.eps}\label{fig:eventstudy:nestedlogit:0.75:histogram}
+  }\\ \vspace{-2mm}
+  \subfloat[$\zeta = 0.25$: Regression coefficients]{ 
+  \includegraphics[width=.49\linewidth]{../input/cbm_ntaorigin_0.25_vs_csp_ntaorigin_0.25_kdensity_exhibit.eps}
+  \label{fig:eventstudy_coef_cont_cs_nestedlogit_0.25}}
+  \subfloat[$\zeta = 0.25$: Ratio of prediction errors]{
+  \includegraphics[width=.49\linewidth]{../input/cbm_ntaorigin_0.25_vs_csp_ntaorigin_0.25_histogram_exhibit.eps}\label{fig:eventstudy:nestedlogit:0.25:histogram}
+  } \\
+  \begin{minipage}{0.98\linewidth}{\footnotesize \textsc{Notes}:
+  The pairs of panels in this figure depict results analogous to those in Figure~\ref{fig:event:83events:coefficientdensities}
+  for the nested-logit model introduced in this appendix
+  with nesting parameter
+  $\zeta = 0.75$ (Panels~\subref*{fig:eventstudy_coef_cont_cs_nestedlogit_0.75}~and~\subref*{fig:eventstudy:nestedlogit:0.75:histogram})
+  and
+  $\zeta = 0.25$ (Panels~\subref*{fig:eventstudy_coef_cont_cs_nestedlogit_0.25}~and~\subref*{fig:eventstudy:nestedlogit:0.25:histogram}).
+  The results for $\zeta = 0.75$ and $\zeta = 0.25$ are not numerically identical,
+  but they typically coincide to two decimal places and are visually indistinguishable.
+  \par}
+  \end{minipage}
+  \end{center}
+\vspace{-1.5em}
+\end{figure}
+\begin{figure}[h!]
+  \caption{Event-study slope coefficients by local labor demand elasticity $\sigma$ }\label{fig:appendix:sigmavary:scatter_comparison_slopes}
+  \subfloat[Slope coefficients for $\sigma = 1.1$ versus $\sigma = 4.0$\label{subfig-1:20230410_1.1_4.0_slopes_scatter}]{%
+    \includegraphics[width=0.45\textwidth]{../input/slope_1.1_4.0_comparison_scatterplot.eps}
+  }
+  \hfill
+  \subfloat[Slope coefficients for $\sigma = \infty$ versus $\sigma = 4.0$\label{subfig-2:20230410_inf_4.0_slope_scatter}]{%
+    \includegraphics[width=0.45\textwidth]{../input/slope_inf_4.0_comparison_scatterplot.eps}
+  }
+
+  \begin{minipage}{0.90\textwidth}{\footnotesize
+    \textsc{Notes}:
+    The slope coefficients come from regressions of the observed change in commuters on the predicted change in commuters for each of the 83 tract-level employment booms.
+    \par}
+    \end{minipage}
+    \vspace{-1em}
+\end{figure}
+\begin{figure}[!h]
+    \caption{Event-study slope coefficients by local increasing returns \(\eta\)}
+    \label{fig:eta_comparisons:slopes}
+    \begin{center}\vspace{-4mm}
+    \subfloat[Slope coefficients for $\eta = 0.0028$ versus $\eta = 0$]{
+        \includegraphics[width=.49\linewidth]{../input/slope_eta_0.0028_csp_comparison_scatterplot.eps}
+    }
+    \subfloat[Slope coefficients for $\eta = 0.1$ versus $\eta = 0$]{
+        \includegraphics[width=.49\linewidth]{../input/slope_eta_0.1_csp_comparison_scatterplot.eps}
+    }\\ \vspace{-2mm}
+    \begin{minipage}{0.90\textwidth}{\footnotesize
+    \textsc{Notes}:
+    The slope coefficients come from regressions of the observed change in commuters on the 
+    predicted change in commuters for each of the 83 tract-level employment booms. 
+    The baseline case, \(\eta = 0\), is the model without increasing returns.
+    \par}\end{minipage}\\ \vspace{4mm}
+    \end{center}\vspace{-2em}
+\end{figure}
+\section{Theory: Proofs and extensions}\label{sec:appendix:theory}
+\section{Descriptive statistics and data sources}\label{sec:appendix:empirics}
+\begin{figure}[!h]
+\caption{Number of commuters between pairs of tracts in Detroit and the Twin Cities}
+\label{fig:Detroit+TwinCities:histogram}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.48\textwidth]{../input/histogram_DetroitUA_2014_positive_w_shares.eps}
+\includegraphics[width=0.48\textwidth]{../input/histogram_MSP_2014_positive_w_shares.eps}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}: 
+These histograms 
+report the number of tract pairs in the Detroit urban area (left panel) and the Minneapolis-St. Paul metropolitan area (right panel) by the number of individuals who reside in the origin tract and work in the destination tract in 2014 LODES data.
+These histograms
+restrict the samples to pairs of tracts with a strictly positive number of commuters.
+Observations larger than the 99\textsuperscript{th} percentile are winsorized (\input{../input/histogram_DetroitUA_2014_topcode.tex}%
+commuters for Detroit urban area and \input{../input/histogram_MSP_2014_topcode.tex}%
+commuters for Minneapolis-St. Paul metropolitan area).
+\input{../input/DetroitUA_2014_number_tracts.tex}
+\input{../input/MSP_2014_number_tracts.tex}
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[!h]
+\caption{Number of commuters between US counties}
+\label{fig:UScounties:histogram}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.65\textwidth]{../input/ACS_20062010_histogram_lower90.eps}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}: 
+This histogram
+depicts the number of county pairs by the estimated number of commuters in the 2006--2010 ACS.
+The sample is restricted to pairs of distinct counties within 120 kilometers,
+the smallest 90\% of estimated commuter counts among such counties,
+and only those pairs reporting a strictly positive number of commuters.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[h]
+\caption{Histogram of migration flows between US states, 2001}
+\label{fig:20221117:state_histogram}
+\centering
+\includegraphics[width=0.9\textwidth]{../input/histogram_state_migration_2001.eps}%
+\end{figure}
+\begin{figure}[htbp]
+\caption{Destination fixed effects from tract-to-tract gravity regressions}
+\label{fig:Detroit+NYC:destFE:distancecovariate}
+\vspace{-3mm}
+\begin{center}
+\includegraphics[width=.60\textwidth]{../input/scatter_destFE_NYC_2010_impute.eps}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}:
+This plot depicts the destination fixed effects estimated in Table~\ref{tab:elasticity}'s column~1 (horizontal axis) and column~2 (vertical axis).
+See the notes to Table~\ref{tab:elasticity} for details.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{table}[htbp]
+\caption{Zeros in US county-to-county commuting matrix}
+\label{tab:UScounties:zeros}
+\vspace{-5mm}
+\begin{center}
+\input{../input/UScounties_descriptive_stats_120km.tex}
+\iftoggle{12ptfont}{\begin{minipage}{0.98\textwidth}}{\begin{minipage}{0.72\textwidth}}
+{\footnotesize \textsc{Notes}: 
+This table reports the number of county pairs with zero commuters and non-zero commuters for three editions of the ACS.
+The sample is restricted to pairs of counties within 120 kilometers of each other.
+The final column reports the share of county pairs for which the Census-reported 90\% margin of error exceeds the (strictly positive) reported number of commuters.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[!hbt]
+\caption{The impersistence of commuting counts for tract pairs in Detroit and NYC}
+\label{tab:Detroit-and-NYC:impersistent}
+\subfloat[Detroit]{\resizebox{0.47\textwidth}{!}{\input{../input/DetroitUA_2013_2014_transition_matrix.tex}}}
+\qquad
+\subfloat[NYC]{\resizebox{0.47\textwidth}{!}{\input{../input/NYC_2013_2014_transition_matrix.tex}}}\\
+\begin{minipage}{1\textwidth}
+{\footnotesize \textsc{Notes}: 
+This table describes pairs of tracts in the Detroit urban area (left panel) and New York City (right panel)
+by reported number of commuters in the 2013 and 2014 LODES.
+It is a transition matrix, in which each cell lists the share of tract pairs in that row (number of commuters in 2013) that belong to that column (number of commuters in 2014).
+Each row sums to 100\%, modulo rounding.
+\par}
+\end{minipage}
+\end{table}
+\begin{table}[h]
+\caption{The impersistence of commuting counts for pairs of US counties}
+\label{tab:UScounties:impersistent}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{../input/heatmap_transition_matrix.eps}
+\begin{minipage}{0.95\textwidth}
+{\footnotesize \textsc{Notes}: 
+This table presents a transition matrix for pairs of counties within 120 kilometers of each other
+by reported number of commuters in two editions of the ACS.
+The first column reports the percentage of county pairs that were in each row in the 2006--2010 data.
+The remaining columns report the share of county pairs within the row that appeared in the corresponding bin in the 2011--2015 data.
+By definition, the shaded cells in each row sum to one, modulo rounding.
+The bin boundaries are arbitrary, since Figure~\ref{fig:UScounties:histogram} shows no obvious bunching.
+We found similar impersistence when using alternative boundaries.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[h]
+\caption{Gravity-based estimates predict 2014 values better than 2013 values do}
+\label{tab:appendix:predict:tractpairs}
+\begin{center} \vspace{-4mm}
+\resizebox{\textwidth}{!}{
+\input{../input/gravity_outofsample.tex}
+}
+\begin{minipage}{0.98\textwidth}{\footnotesize
+\textsc{Notes}:
+Each row reports results for all tract pairs in Detroit (upper panel) or New York City (lower panel) with fewer than 5 or 10 commuters in the 2013 LODES data.
+The ``Share'' column reports the share of tract pairs covered by the row.
+The ``Gravity'' columns report the $R^2$ obtained by regressing the 2014 number of commuters on the number of commuters predicted by a gravity model estimated using 2013 data.
+The ``Gravity: time'' column estimates the gravity equation as described in Section~3.2.
+The ``Gravity: distance'' column uses $\ln \delta_{kn} = \ln \text{distance}_{kn}$ rather than commuting costs defined in Section~3.2.
+The ``2013 values'' columns report the $R^2$ obtained by regressing the 2014 number of commuters on the 2013 number of commuters.
+All estimated slope coefficients are positive.
+The two ``2013 values'' columns differ because the regression sample is within observations where predictions from the gravity model are available.
+In the distance specification, $k = n$ observations are dropped.
+For NYC, the commute is infeasible for two observations.
+\par}\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[!hbt]
+\centering
+\caption{Transition matrix for state migration flows between 2001 and 2002}
+\label{tab:20221117:state_migration_transition}
+\input{../input/CDP_2001_2002_migration_transition_matrix.tex}
+\end{table}
+\section{Finite model: Price dispersion and ``ex post regret''}\label{sec:appendix:expostregret}
+\begin{figure}[tbhp]\caption{Gap between mean wage and continuum-case expectation of wage}\label{fig:appendix:jensen:wagegap}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../input/wage_deviation_density_winsorized.eps}
+\begin{minipage}{0.98\textwidth}{\footnotesize \textsc{Notes}:
+	This figure depicts the absolute percentage-point deviation of the mean realized wage from the continuum-case rational expectation of the wage
+	across the 2,143 workplace tracts.
+	We compute the mean wage using 100,000 simulations of the model with a finite number of individuals.
+	This mean excludes the rare instances in which a tract's equilibrium wage is undefined because its realized labor supply $L_n$ is zero.
+	Deviations larger than five percentage points are winsorized to five.
+\par}\end{minipage}
+\end{center}
+\end{figure}	
+\begin{figure}[tbhp]
+\caption{Price dispersion across equilibria}
+\label{fig:appendix:pricedispersion}
+\begin{center}\vspace{-5mm}
+\subfloat[Rent]{
+\includegraphics[width=.45\linewidth]{../input/hist_dispersion_rent.eps}
+\label{fig:hist_dispersion_realrent_granular}}
+\subfloat[Wage]{ 
+\includegraphics[width=.45\linewidth]{../input/hist_dispersion_wage.eps}
+\label{fig:hist_dispersion_realwage_granular}} \\ \vspace{-2mm}
+\begin{minipage}{0.98\textwidth}{\footnotesize
+\textsc{Notes}:
+The plots depict the dispersion of prices ($r_k/P$ or $w_n/P$) for each tract in New York City using the model with a finite number of individuals estimated on 2010 data.
+We define price dispersion as
+the standard deviation of the price in the commuting equilibrium with finitely many individuals across 100,000 simulations
+divided by the continuum-case rational expectation of that price.
+Panel~\subref*{fig:hist_dispersion_realrent_granular} depicts the dispersion in tracts' rents,
+which have a median value of \input{../input/hist_dispersion_rent_p50.tex} (p5 = 
+\input{../input/hist_dispersion_rent_p5.tex}, p95 = \input{../input/hist_dispersion_rent_p95.tex}).
+Panel~\subref*{fig:hist_dispersion_realwage_granular} depicts the dispersion in tracts' wages,
+which have a median value of \input{../input/hist_dispersion_wage_p50.tex} (p5 = 
+\input{../input/hist_dispersion_wage_p5.tex}, p95 = \input{../input/hist_dispersion_wage_p95.tex}).
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{table}[hp]
+\caption{Distribution of ex post regrets}
+\label{table:expost_statistics}
+\vspace{-6mm}
+\begin{center}
+\resizebox{\textwidth}{!}{
+\input{../input/expost_results.tex}
+}
+\begin{minipage}{0.98\textwidth}
+{\footnotesize \textsc{Notes}: 
+The table reports the share of individuals with ex post regret and the distribution of ex post regrets over their desired switches in simulations of our estimated model with a finite number of individuals.
+The first column identifies the simulation $s$.
+The second column reports the fraction of individuals who have ex post regret and therefore would prefer a different choice given realized prices.
+Columns under ``Unconditional distribution'' report the distribution of ex post regret based on the full sample ($I = 2,488,905$).
+Columns under ``Conditional distribution'' report the distribution of ex post regret among those who would want to switch.
+The ``Mean'' row reports the mean value across the 10 simulations.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\begin{table}[hp]
+\caption{Price dispersion across simulation methods}
+\label{table:compare_dispersion}
+\vspace{-6mm}
+\begin{center}
+\input{../input/compare_dispersion.tex}
+\iftoggle{12ptfont}{\begin{minipage}{0.93\textwidth}}{\begin{minipage}{0.82\textwidth}}
+{\footnotesize \textsc{Notes}: 
+This table compares the price ($r_k/P$ or $w_n/P$) dispersion generated by the simulations used
+in Section~E.2 (100,000 simulations)
+and Section~E.3 (10 simulations).
+As described in the text, each tract's price dispersion is
+the standard deviation of the price in the commuting equilibrium with finitely many individuals across simulations
+divided by the continuum-case rational expectation of that price.
+The first column reports the average price dispersion across all tracts.
+The remaining columns report the level of price dispersion for tracts at selected percentiles.
+\par}
+\end{minipage}
+\end{center}
+\end{table}
+\section{Amazon HQ2 counterfactual}\label{sec:appendix:amazon}
+\begin{figure}[htb]
+\caption{Amazon HQ2 counterfactual decreases in workers}
+\label{fig:NYC:AmazonHQ2:workerchanges}
+\begin{center}\vspace{-4mm}
+\subfloat[Employment in 2010]{ 
+\includegraphics[width=.33\linewidth]{../input/map_emp2010.png}
+\label{fig:NYC:emp2010}}
+\subfloat[Covariates-based decreases]{
+\includegraphics[width=.33\linewidth]{../input/map_cont_empchange.png}\label{fig:NYC:AmazonHQ2:CBM:workerchange}
+}
+\subfloat[Calibrated-shares decreases]{
+\includegraphics[width=.33\linewidth]{../input/map_empchange_cs.png}\label{fig:NYC:AmazonHQ2:CSP:workerchange}
+}\\
+\begin{minipage}{\textwidth}{\footnotesize
+\textsc{Notes}:
+Panel~\subref*{fig:NYC:emp2010} depicts the number of workers employed in each tract in 2010.
+Panels~\subref*{fig:NYC:AmazonHQ2:CBM:workerchange} and \subref*{fig:NYC:AmazonHQ2:CSP:workerchange} depict decreases in the number of workers predicted by the covariates-based model and calibrated-shares procedure, respectively.
+As total population is fixed, the number of workers decreases in all tracts except the Amazon HQ2 location.
+The covariates-based predictions for workers describe both the continuum model and the model with finite individuals
+because the change in the former equals the expected change in the latter.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[htb] 
+\caption{Predicted changes in wages}
+\label{fig:AHQ2:wagechanges}
+\begin{center}\vspace{-5mm}
+\subfloat[Covariates-based: Continuum]{
+\includegraphics[width=.33\linewidth]{../input/map_cont_change_realw.png}\label{fig:AHQ2:wagechanges:CBM}
+}
+\subfloat[Covariates-based: Finite]{
+\includegraphics[width=.33\linewidth]{../input/map_gu_realwchange_fixednu_mean_change_sigma_4.0.png}\label{fig:AHQ2:wagechanges:CBM:finitemodel}
+}
+\subfloat[Calibrated shares]{
+\includegraphics[width=.33\linewidth]{../input/map_cs_hat_realw.png}\label{fig:AHQ2:wagechanges:CSP}
+} \\
+\begin{minipage}{0.90\textwidth}{\footnotesize
+\textsc{Notes}:
+These maps depict percent changes in wages, $(\hat{w}_{n}/\hat{P} - 1) \times 100$.
+Panel~\subref*{fig:AHQ2:wagechanges:CBM}
+depicts the change in the covariates-based continuum model.
+Panel~\subref*{fig:AHQ2:wagechanges:CBM:finitemodel}
+depicts the mean change across 100 simulations of the model with finite individuals.
+Panel~\subref*{fig:AHQ2:wagechanges:CSP} 
+depicts each tract's predicted wage change using the calibrated-shares procedure.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[h]
+	\caption{Rent changes by distance to Amazon HQ2}\label{fig:AHQ2:rent_gradients}
+	\centering
+	\includegraphics[width=0.65\textwidth]{../input/AHQ2_rent_change_CBM_vs_CSP_polyplot_log.eps}
+	\begin{minipage}{0.90\textwidth}{\footnotesize \textsc{Notes}:
+	This figure plots the changes in rents predicted by the covariates-based continuum model and the calibrated-shares procedure
+	as functions of (log) distance to the Amazon HQ2 tract.
+	The percent change in rents is $\left(\frac{\hat{r}_{k}}{\hat{P}} - 1\right) \times 100$.
+    \par}\end{minipage}
+\end{figure}
+\begin{figure}[tbh]
+\caption{Comparison of predictions of the change in real rents for $\sigma = 4.0$ and $\sigma = \infty$}
+\label{20230613:fig:CBM_CSP_varsigma_ell_4.0_vs_inf_rent}
+\begin{center}
+\subfloat[CBM comparison of real rents for $\sigma = 4.0$ and $\sigma = \infty$\label{subfig-1:fig:CBM_varsigma_rents_4.0_vs_inf}]{%
+	\includegraphics[width=0.45\textwidth]{../input/varsigma_rents_inf_4.0_CBM_notreat_comparison_scatterplot.eps}
+	}
+	\hfill
+	\subfloat[CSP comparison of real rents for $\sigma = 4.0$ and $\sigma = \infty$\label{subfig-2:fig:CSP_varsigma_rents_4.0_vs_inf}]{%
+	\includegraphics[width=0.45\textwidth]{../input/varsigma_rents_inf_4.0_CSP_notreat_comparison_scatterplot.eps}
+	}\\
+\begin{minipage}{0.90\textwidth}{\footnotesize \textsc{Notes}:
+	These plots compare the percent change in real rents, $(\hat{r}/\hat{P} - 1) \times 100$,
+	predicted by the covariates-based model (left panel) and calibrated-shares procedure (right panel)
+	for the labor demand elasticities of $\sigma = 4.0$ and $\sigma = \infty$.
+	In both panels,
+	the predicted real rent changes associated with different values of $\sigma$
+	are almost perfectly correlated and only differ by a constant. 
+\par}\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[!ht]
+\caption{Predicted changes in commuters to the AHQ2 tract from SVD, IFE, and nested-logit specifications}
+\label{fig:AHQ2_svd16_ife1_cbm_ell_comp}
+\centering
+\includegraphics[width=0.31\linewidth]{../input/approx_ell_cbm_svd_16_comparison_scatterplot.eps}
+\includegraphics[width=0.31\linewidth]{../input/approx_ell_cbm_ife_1_comparison_scatterplot.eps}
+\includegraphics[width=0.31\linewidth]{../input/ell_nested_comparison_plots_0.25.eps}
+\begin{minipage}{0.93\textwidth}{\footnotesize \textsc{Notes}:
+	This figure compares the predicted changes in commuters to the Amazon HQ2 tract
+	from the approximated matrix derived from a rank-16 singular value decomposition (left panel),
+	from the rank-1 interactive-fixed-effects specification (center panel),
+	and from the nested-logit specification with $\zeta = 0.25$ (right panel)
+	to the predictions from the covariates-based specification.
+\par}\end{minipage}
+\end{figure}
+\begin{figure}[!ht]
+    \caption{Predicted changes in residents from SVD, IFE, and nested-logit specifications}
+    \label{fig:res_change_map_svd16_ife1_comp}
+    \begin{center}
+    \subfloat[Rank-16 SVD]{
+        \includegraphics[width=.33\linewidth]{../input/map_svd16_reschange_cutoff.png}
+    }
+    \subfloat[Rank-1 IFE]{
+        \includegraphics[width=.33\linewidth]{../input/map_ife1_reschange_cutoff.png}
+    }
+    \subfloat[Nested logit]{
+        \includegraphics[width=.33\linewidth]{../input/map_cont_change_res_nested.png}
+    }
+
+\end{center}\vspace{-6mm}
+	\begin{minipage}{0.99\textwidth}{\footnotesize \textsc{Notes}:
+		These maps depict the changes in residents predicted by
+		the approximated matrix derived from a rank-16 singular value decomposition (left panel),
+		the rank-1 interactive-fixed-effects specification (center panel),
+		and 
+		the nested-logit specification with $\zeta = 0.25$ (right panel).
+		They should be compared to the predictions depicted in Figure~\ref{fig:NYC:AmazonHQ2:CBM:residentchange}.
+	\par}\end{minipage}
+\end{figure}
+\begin{figure}[!ht]
+    \caption{Changes in residents and rents by distance ventile}
+    \label{fig:ventile_residents_rents}
+    \begin{center}
+    \subfloat[Residents]{
+        \includegraphics[width=.48\linewidth]{../input/AHQ2_residents_bydistbin_fixednu_sigma_4.0.eps}
+    }
+    \subfloat[Rents]{
+        \includegraphics[width=.48\linewidth]{../input/AHQ2_rents_bydistbin_fixednu_sigma_4.0.eps}
+    }
+
+\end{center}\vspace{-6mm}
+	\begin{minipage}{0.99\textwidth}{\footnotesize \textsc{Notes}:
+    This figure depicts the distribution of average tract-level outcomes by ventile of distance to the Amazon HQ2 tract.
+    Each ventile contains about 108 residential tracts.
+    Citywide average outcomes are shown with a dashed red line.
+    Each point is the mean value of the ventile's outcomes across 100 simulations.
+    The confidence intervals are constructed for each ventile from the 5\textsuperscript{th} and 
+    95\textsuperscript{th} percentile outcomes of the 100 simulations.
+    The percent change in real rents is defined as $\left(\frac{\hat{r}_{k}}{\hat{P}}-1\right) \times 100$.
+    Shorter-distance ventiles tend to have larger increases in both residents and rents on average.
+    For all but the first and twentieth ventiles, the 90\% confidence interval for the change in residents across 100 simulations includes zero.
+    The rent increase in the first ventile in the mean simulation is about double that in the 20\textsuperscript{th} ventile.
+    The 90\% confidence interval of every ventile includes 0.6\%, the citywide average rent increase.
+    \par}\end{minipage}
+\end{figure}
+\begin{figure}[!ht]
+    \caption{Changes in employment and wages by distance ventile}
+    \label{fig:ventile_employment_wages}
+    \begin{center}
+    \subfloat[Employment]{
+        \includegraphics[width=.48\linewidth]{../input/AHQ2_emp_bydistbin_fixednu_sigma_4.0.eps}
+    }
+    \subfloat[Wages]{
+        \includegraphics[width=.48\linewidth]{../input/AHQ2_wages_bydistbin_fixednu_sigma_4.0.eps}
+    }
+
+\end{center}\vspace{-6mm}
+    \begin{minipage}{0.99\textwidth}{\footnotesize \textsc{Notes}:
+    This figure depicts the distribution of average tract-level outcomes by ventile of distance to the Amazon HQ2 tract.
+    Each ventile contains about 107 workplace tracts.
+    Citywide average outcomes are shown with a dashed red line.
+    Each point is the mean value of the ventile's outcomes across 100 simulations.
+    The confidence intervals are constructed for each ventile from the 5\textsuperscript{th} and 
+    95\textsuperscript{th} percentile outcomes of the 100 simulations.
+    The percent change in real wages is defined as $\left(\frac{\hat{w}_{n}}{\hat{P}}-1\right) \times 100$.
+    \par}\end{minipage}
+\end{figure}
+\begin{figure}[h!]
+\caption{Uncertainty about counterfactual changes induced by idiosyncrasies (NTAs)}
+\label{fig:appendix:NTA:uncertainty}
+\begin{center}\vspace{-4mm}
+\subfloat[Changes in residents]{ 
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_res_simulation_fixednu_NTA.eps}
+\label{fig:appendix:NTA:fixednu:g_res_simulation}}
+\subfloat[Changes in workers]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_emp_simulation_fixednu_NTA.eps}
+\label{fig:appendix:NTA:fixednu:g_emp_simulation}}\\ \vspace{-2mm}
+\subfloat[Changes in rents]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_realr_simulation_fixednu_sumstats_diff_NTA.eps}
+\label{fig:appendix:NTA:fixednu:g_realrent}}
+\subfloat[Changes in wages]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_realw_simulation_fixednu_sumstats_diff_NTA.eps}
+\label{fig:appendix:NTA:fixednu:g_realwage}}\\ \vspace{-2mm}
+\begin{minipage}{0.96\textwidth}{\footnotesize
+\textsc{Notes}:
+These plots depict variation in counterfactual changes 
+induced by individual idiosyncrasies in the NTA-level model with a finite number of individuals.
+The panel depicts the 5\textsuperscript{th} and 95\textsuperscript{th} percentiles of predicted changes in quantities and prices
+across 100 simulations of the NTA-level model with a finite number of individuals.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[h!]
+\caption{Uncertainty about counterfactual changes induced by idiosyncrasies (nested logit)}
+\label{fig:appendix:nested:uncertainty}
+\begin{center}\vspace{-4mm}
+\subfloat[Changes in residents]{ 
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_res_simulation_fixednu_nested.eps}
+\label{fig:appendix:nested:fixednu:g_res_simulation}}
+\subfloat[Changes in workers]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_emp_simulation_fixednu_nested.eps}
+\label{fig:appendix:nested:fixednu:g_emp_simulation}}\\ \vspace{-2mm}
+\subfloat[Changes in rents]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_realr_simulation_fixednu_sumstats_diff_nested.eps}
+\label{fig:appendix:nested:fixednu:g_realrent}}
+\subfloat[Changes in wages]{
+\includegraphics[width=.49\linewidth]{../input/scatter_gu_realw_simulation_fixednu_sumstats_diff_nested.eps}
+\label{fig:appendix:nested:fixednu:g_realwage}}\\ \vspace{-2mm}
+\begin{minipage}{0.96\textwidth}{\footnotesize
+\textsc{Notes}:
+These plots depict variation in counterfactual changes 
+induced by individual idiosyncrasies in the nested-logit specification (with parameter $\zeta = 0.25$) of the model with a finite number of individuals.
+The panel depicts the 5\textsuperscript{th} and 95\textsuperscript{th} percentiles of predicted changes in quantities and prices across 100 simulations of the model with a finite number of individuals.
+To simulate draws from a nested-logit distribution $F(\mathring{\nu}^i)$,
+we first represent $\mathring{\nu}^i \sim F(\mathring{\nu}^i)$ using 
+a standard Gumbel distribution $\mathcal{G}(0,1)$ and a positive stable distribution (PSD) $\mathcal{P}(\zeta)$, 
+based on \cite{Galichon:2022}:
+$\mathring{\nu}_{kn}^i = \zeta \left(\nu_{kn}^i + \log Z_{B_z}^i\right)$,
+where $\nu_{kn}^i$ follows $\mathcal{G}(0,1)$, and $Z_{B_z}^i$ follows $\mathcal{P}(\zeta)$.
+Second, we apply \cite{Ridout:2009}’s method to simulate $Z_{B_z}^i \sim \mathcal{P}(\zeta)$ for $\zeta = 0.25$.
+Finally, we combine the standard Gumbel draws and the PSD draws
+to construct the draws from the nested-logit distribution.
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+\begin{figure}[h!]
+\caption{Uncertainty about counterfactual changes induced by individual idiosyncrasies ($\sigma = \infty$)}
+\label{fig:AHQ2:fixednu:sigmaInf}
+\begin{center}\vspace{-4mm}
+\subfloat[Changes in residents]{ 
+\includegraphics[width=.33\linewidth]{../input/scatter_gu_res_simulation_fixednu_sumstats_diff_sigma_Inf.eps}
+\label{fig:AHQ2:fixednu:sigmaInf:uncertainty:residents}}
+\subfloat[Changes in workers]{
+\includegraphics[width=.33\linewidth]{../input/scatter_gu_emp_simulation_fixednu_sumstats_diff_sigma_Inf.eps}
+\label{fig:AHQ2:fixednu:sigmaInf:uncertainty:workers}}
+\subfloat[Changes in rents]{
+\includegraphics[width=.33\linewidth]{../input/scatter_gu_realr_simulation_fixednu_sumstats_diff_sigma_Inf.eps}
+\label{fig:AHQ2:fixednu:sigmaInf:uncertainty:rents}}
+\vspace{-2mm}
+\begin{minipage}{\textwidth}{\footnotesize
+\textsc{Notes}:
+The plots depict the 5\textsuperscript{th} and 95\textsuperscript{th} percentiles of predicted changes in quantities and prices across 100 simulations of the model with a finite number of individuals in which $\sigma = \infty$.
+In Panel~\subref*{fig:AHQ2:fixednu:sigmaInf:uncertainty:residents},
+the 90\% confidence interval for the change in residents includes zero for all tracts.
+In Panel~\subref*{fig:AHQ2:fixednu:sigmaInf:uncertainty:workers},
+\input{../input/report_gu_emp_fixednu_sigma_Inf.tex} 
+Panel~\subref*{fig:AHQ2:fixednu:sigmaInf:uncertainty:workers}
+excludes the Amazon HQ2 workplace tract.
+The 90\% confidence interval for the change in employment for the Amazon workplace tract is \input{../input/AHQ2_d_emp_p5_sigma_4.0.tex}\unskip\ to \input{../input/AHQ2_d_emp_p95_sigma_4.0.tex}\unskip.
+In Panel~\subref*{fig:AHQ2:fixednu:sigmaInf:uncertainty:rents},
+real rent changes are $(\hat{r}_{k}/\hat{P} - 1) \times 100$,
+and
+\input{../input/report_gu_realr_fixednu_sigma_Inf.tex}
+\par}
+\end{minipage}
+\end{center}
+\end{figure}
+
+\bibliographystyle{aeanobold-oxford}
+\bibliography{DT}
+
+\end{document}

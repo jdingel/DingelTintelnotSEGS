@@ -3,12 +3,12 @@
 import Pkg
 Pkg.activate("../output")
 Pkg.instantiate()
-using LinearAlgebra, Random, Distributions #granular_equilibrium_solver
+using LinearAlgebra, Random, Distributions
 using Optim # contains optimization methods: GradientDescent(), L-BFGS()
-using CSV, DataFrames, JLD2, FileIO, StatsBase, StatFiles #calibrate
-using HypothesisTests, Plots, KernelDensity, GLM #calibrate
-using Roots # event study
-using Distances, StatsFuns, Calculus, LaTeXStrings #logitestimation
+using CSV, DataFrames, JLD2, FileIO, StatsBase, StatFiles
+using HypothesisTests, Plots, KernelDensity, GLM
+using Roots
+using Distances, StatsFuns, Calculus, LaTeXStrings
 using ZipFile
 using GLM # general linear models
 using NMF # non-negative matrix factorization

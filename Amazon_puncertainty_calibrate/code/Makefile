@@ -19,8 +19,6 @@ $(OUTPUTS): ../output/primitives_nyc2010_time_puncertainty_%.jld2: ../input/cali
 #INPUT RECIPES
 ../input/calibrate_main.jl ../input/calibrate_function.jl: ../input/%.jl: ../../nyc_baseline_calibrate/code/%.jl | ../input
 	ln -sf $< $@
-../input/function_calibrate.jl ../input/model_fundamental_solver.jl: ../input/%.jl: ../../continuum_equilibrium_solver/code/%.jl | ../input
-	ln -sf $< $@
 
 #DATA INPUT RECIPES
 $(INPUTS) : ../input/%: ../../Amazon_puncertainty_gravity/output/% | ../input
