@@ -18,7 +18,7 @@ After downloading this replication package (and installing the relevant software
 
 ## Software requirements
 The project's tasks are implemented via Julia, Matlab, R, Stata, and shell scripts.
-We ran our code using Julia 1.9, Matlab 2023b, R 4.1, Stata 18, GNU bash version 3.2.57, and ImageMagick 7.1.1-47.
+We ran our code using Julia 1.10.2, Matlab 2023b, R 4.1, Stata 18, GNU bash version 3.2.57, and ImageMagick 7.1.1-47.
 The taskflow structure employs [symbolic links](https://en.wikipedia.org/wiki/Symbolic_link).
 
 The Makefiles rely on `shell_functions.sh`, which assumes that `julia`, `Rscript`, and `stata-se` are valid commands on your machine.
