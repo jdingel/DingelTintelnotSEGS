@@ -10,18 +10,13 @@ OUTPUTS = $(foreach shock, $(set_shock), \
 		$(addprefix ../output/prediction_csp_, $(shock)_$(event)_treated_ell_change_fixednu.csv) \
 		$(addprefix ../output/prediction_cbm_, $(shock)_$(event)_treated_ell_change_fixednu.csv)))
 
-REPORTS = $(foreach shock, $(set_shock), $(foreach event, $(shell seq 1 1 2),  \
- 	../report/csp_shock_$(shock)_$(event)_fixednu.jld2.log \
- 	../report/cbm_shock_$(shock)_$(event)_fixednu.jld2.log))
-
 ## RECIPES
 .SECONDARY: $(foreach shock, $(set_shock), \
 			$(foreach event, $(set_event), \
 			../temp/elasticity_$(shock)_$(event)_fixednu.csv ../temp/fe_i_$(shock)_$(event)_fixednu.dta ../temp/fe_j_$(shock)_$(event)_fixednu.dta \
 			../temp/primitives_$(shock)_$(event)_fixednu.jld2 ))
 
-all: $(OUTPUTS) $(REPORTS)
-report: $(REPORTS)
+all: $(OUTPUTS)
 include ../../generic.make
 
 ## OUTPUT
@@ -43,7 +38,7 @@ include ../../generic.make
 
 ../temp/elasticity_%_fixednu.csv ../temp/fe_i_%_fixednu.dta ../temp/fe_j_%_fixednu.dta ../temp/nyc2010_lodes_wzero_wdelta_%_fixednu.dta: gravity_regression_fixednu.do \
 	../input/gravity_saveFE_time.do ../input/nyc2010_lodes_wzero_wdelta.csv ../input/DGP_%_fixednu.csv | $(STATA_OOPR)
-	$(eval twoargs := $(shell echo $@ | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
+	$(eval twoargs := $(shell echo $* | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
 	$(STATA) $< $(twoargs)
 
 ## INPUT

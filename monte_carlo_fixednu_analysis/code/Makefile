@@ -20,7 +20,7 @@ include ../../generic.make
 
 
 ## RECIPES
-$(addprefix ../output/, hist_montecarlo_fixednu_empchanges_%.eps sumstats_montecarlo_fixednu_empchanges_%.tex sd_montecarlo_fixednu_emp_changes_%.tex): sum_emp_changes.do $(foreach event, $(set_event), ../input/DGP_%_$(event)_fixednu.csv) | ../input 
+$(addprefix ../output/, hist_montecarlo_fixednu_empchanges_%.eps sumstats_montecarlo_fixednu_empchanges_%.tex sd_montecarlo_fixednu_emp_changes_%.tex): sum_emp_changes.do $(foreach event, $(set_event), ../input/DGP_%_$(event)_fixednu.csv) | $(STATA_OOPR)
 	$(eval arg := $(shell echo $* | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
 	$(STATA) $< $(arg)
 

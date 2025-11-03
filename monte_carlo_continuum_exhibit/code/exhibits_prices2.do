@@ -37,4 +37,5 @@ sfmt("f" \ "f" \ "f" \ "f" \ "f" \ "f" \ "f") ///
 		"Calibrated-shares: intercept" \ ///
 		"Calibrated-shares: MSE") ///
 	tex frag nocenter
-shell sed -i '' 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/sumstats_continuum_prices_`1'_`2'.tex"
+shell sed -i.bak 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/sumstats_continuum_prices_`1'_`2'.tex"
+rm ../output/sumstats_continuum_prices_`1'_`2'.tex.bak

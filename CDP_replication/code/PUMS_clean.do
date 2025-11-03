@@ -162,4 +162,5 @@ mat input one = (1\1\1\1\1\1\1)
 mat rowtot = freq*one
 mat rowpct = inv(diag(rowtot))*freq
 frmttable using "../output/CDP_2001_2002_migration_transition_matrix.tex", statmat(rowpct) nocenter ctitle("2002" \ "2001","0","1","2","3","4","5","6+")  rtitles("0"\"1"\"2"\"3"\"4"\"5"\"6+") multicol(1,1,8) tex frag replace
-shell sed -i '' 's/\\end{tabular}\\\\/\\end{tabular}/g' ../output/CDP_2001_2002_migration_transition_matrix.tex
+shell sed -i.bak 's/\\end{tabular}\\\\/\\end{tabular}/g' ../output/CDP_2001_2002_migration_transition_matrix.tex
+rm ../output/CDP_2001_2002_migration_transition_matrix.tex.bak

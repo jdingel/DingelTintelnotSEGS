@@ -15,7 +15,7 @@ rename (id_i id_j x_ij_before) (i j X_ij)
 tempfile df
 save `df'
 gen delta = exp(log_delta)
-save_data "../temp/nyc2010_lodes_wzero_wdelta_`1'_`2'_`3'_`4'.dta", key(i j) replace log_replace
+save_data "../temp/nyc2010_lodes_wzero_wdelta_`1'_`2'_fixednu.dta", key(i j) replace log_replace
 // gravity regression
 gravity_saveFE_time using `df', ///
 	time_elasticity("../temp/elasticity_`1'_`2'_fixednu.csv") ///

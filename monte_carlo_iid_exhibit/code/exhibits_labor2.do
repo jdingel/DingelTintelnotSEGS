@@ -34,4 +34,5 @@ frmttable using "../output/sumstats_iid_labor_`1'_`2'.tex", replace ///
 		"Calibrated-shares: intercept" \ ///
 		"Calibrated-shares: MSE") ///
 	tex frag nocenter
-shell sed -i '' 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/sumstats_iid_labor_`1'_`2'.tex"
+shell sed -i.bak 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/sumstats_iid_labor_`1'_`2'.tex"
+rm ../output/sumstats_iid_labor_`1'_`2'.tex.bak
