@@ -3,7 +3,7 @@ include ../../shell_functions.make
 
 ## DEFINITIONS
 
-#OUTPUT RECIPE:
+#RECIPES
 all: $(addsuffix .jld2.log, $(addprefix ../report/,\
 	primitives_nyc2010_time \
 	$(foreach stub, _pool_2008_2010, baseline_equilibrium_outcomes$(stub)))) \

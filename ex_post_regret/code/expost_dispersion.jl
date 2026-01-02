@@ -14,8 +14,8 @@ simulation_count = 10
 
 # Prepare data
 CBM_baseline = load("../input/baseline_equilibrium_outcomes_sigma_4.0.jld2")
-wage = baseline_eqlm["wages"]
-rent = baseline_eqlm["rents"]
+wage = CBM_baseline["wages"]
+rent = CBM_baseline["rents"]
 P = sum((wage ./ primitives["productivity"]).^(1 - σ))^(1 / (1 - σ))
 
 w_matrix = zeros(length(primitives["productivity"]),simulation_count);

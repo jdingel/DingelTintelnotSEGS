@@ -2,7 +2,7 @@ import Pkg
 Pkg.activate("../input/Project.toml")
 using JLD2, FileIO, DataFrames, CSV, StatsBase
 # Function
-include("finitemodel_programs.jl")
+include("../input/finitemodel_programs.jl")
 function granular_simulation(wage::Array{Float64,1},rent::Array{Float64,1},productivity::Array{Float64,1},landendowment::Array{Float64,1},delta::Array{Float64,2},ε::Float64,α::Float64,σ::Float64,pop::Float64,start_seed::Int64,simulation_count::Int64)
 	prob = prob_i_choose_kn(wage,rent,delta,ε,α)
 	rent_matrix = zeros(length(rent),simulation_count)

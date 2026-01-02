@@ -11,7 +11,7 @@ local pop=`r(sum)'
 foreach s of numlist 1/10 {
 
 	foreach i of numlist 1/100 {
- 		import delimited "../temp/expost_individuals_choices_s`s'_b`i'",clear
+ 		import delimited "../temp/expost_individuals_choices_s`s'_b`i'.csv",clear
  		if `i'==1 tempfile df`s'
  		if `i'!=1 append using `df`s''
  		save `df`s'', replace

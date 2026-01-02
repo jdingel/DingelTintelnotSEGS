@@ -72,4 +72,5 @@ frmttable using "../output/compare_dispersion.tex", statmat(output) ///
 	ctitle("Simulation count" "mean" "p5" "p10" "p25" "p50" "75" "p90" "p95") ///
 	rtitle("100,000"\"10"\"100,000"\"10") ///
 	sd(3) tex frag nocenter replace
-shell sed -i 's/end{tabular}//g' "../output/compare_dispersion.tex"
+shell sed -i.bak 's/end{tabular}//g' "../output/compare_dispersion.tex"
+rm ../output/compare_dispersion.tex.bak

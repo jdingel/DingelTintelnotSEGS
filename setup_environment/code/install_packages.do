@@ -19,6 +19,9 @@ foreach package in `PACKAGES' {
     }
 }
 
+// install `require` package version 1.4.0 (10Apr2024)
+net install require, from(https://raw.githubusercontent.com/sergiocorreia/stata-require/97e2c0b9dd07e187b8f0bc4c579af23bf7b0c4a9/src/) replace
+
 // gtools 1.7.5 not in ssc mirror (jumps from 1.5.1 -> 1.10.1 between 10Dec2022 and 11Dec2022)
 capture which gtools
 if _rc== 111{

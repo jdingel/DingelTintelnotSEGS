@@ -45,8 +45,8 @@ $(OUTPUTS_SCREE): scree_generation.R ../input/nyc2010_lodes_wzero_wdelta.dta | $
 	unzip -j ../input/nyc_2010_levels_tracttotract_approx_nnmf_$*.dta.zip -d ../temp
 ../temp/nyc2010_lodes.csv: convert_lodes_dta_csv.do ../input/nyc2010_lodes_wzero_wdelta.dta | $(STATA_OOPR)
 	$(STATA) $<
-../temp/labor_b_approx_ife_1.csv: labor_b_approx.m ../temp/nyc2010_lodes.csv $(addprefix ../input/, beta_1.csv fe_i_1.csv fe_j_1.csv fe_i_inter_1.csv fe_j_inter_1.csv) | ../temp $(OOPR)
-	sbatch -W --export=command1="module load MATLAB/R2023b",command2="matlab -batch labor_b_approx" run.sbatch
+../temp/labor_b_approx_ife_1.csv: labor_b_approx.m ../temp/nyc2010_lodes.csv $(addprefix ../input/, beta_1.csv fe_i_1.csv fe_j_1.csv fe_i_inter_1.csv fe_j_inter_1.csv) | $(OOPR)
+	$(MATLAB) labor_b_approx
 
 $(addprefix ../input/, beta_1.csv fe_i_1.csv fe_j_1.csv fe_i_inter_1.csv fe_j_inter_1.csv): ../input/%.csv: ../../interactive_fe_estimation/output/%.csv | ../input
 	ln -sf $< $@

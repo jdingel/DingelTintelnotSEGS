@@ -29,4 +29,5 @@ frmttable using "../output/monte_carlo_result_mean_continuum.tex", statmat(mat_o
 	"0.5" "2.5" \ "0.5" "5" \ "0.5" "12.5" \ "0.5" "25" \ "0.5" "50" \ "0.5" "125" \ "0.5" "250" \ "0.5" "2560" \ ///
 	"1" "2.5" \ "1" "5" \ "1" "12.5" \ "1" "25" \ "1" "50" \ "1" "125" \ "1" "250" \ "1" "2560") ///
 	sd(4) colj(rrcc) tex frag nocenter replace
-shell sed -i '' 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/monte_carlo_result_mean_continuum.tex"
+shell sed -i.bak 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/monte_carlo_result_mean_continuum.tex"
+rm ../output/monte_carlo_result_mean_continuum.tex.bak

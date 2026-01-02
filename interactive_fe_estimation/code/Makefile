@@ -25,14 +25,22 @@ include ../../generic.make
 	cat $(foreach s, $(set_start), ../temp/multistarts/2010/obj_$*_$(s).csv) > $@
 
 # Optimal parameter estimates for rank 0 through 3
-$(addprefix ../output/, beta_0.csv fe_i_0.csv fe_j_0.csv ife_ij_0.csv) ../temp/labor_b_approx_ife_0.csv: select_optimal_ests_0.sbatch \
-	$(addprefix ../temp/multistarts/2010/, beta_0_1.csv fe_i_0_1.csv fe_j_0_1.csv) | $(OOPR)
-	sbatch -W $< 
+$(addprefix ../output/, beta_0.csv fe_i_0.csv fe_j_0.csv fe_i_unnorm_0.csv fe_j_unnorm_0.csv optimum_seed_0.csv ife_ij_0.csv) ../temp/labor_b_approx_ife_0.csv: select_optimal_ests_0.sbatch \
+	$(addprefix ../temp/multistarts/2010/, beta_0_1.csv fe_i_0_1.csv fe_j_0_1.csv) ../temp/nyc2010_lodes.csv | $(OOPR)
+ifneq ($(shell command -v sbatch),)
+	sbatch -W $<
+else
+	matlab -batch "select_optimal_ests_from_multistarts 0 1 2010" > /dev/null
+endif
 	rm select_optimal_ests_0.sbatch
 
-$(addprefix ../output/, optimum_seed_%.csv beta_%.csv fe_i_%.csv fe_j_%.csv fe_i_inter_%.csv fe_j_inter_%.csv ife_ij_%.csv) ../temp/labor_b_approx_ife_%.csv: select_optimal_ests_%.sbatch \
-	$(addprefix ../temp/multistarts/2010/, $(foreach s, $(set_start), beta_%_$(s).csv fe_i_%_$(s).csv fe_j_%_$(s).csv)) | $(OOPR)
+$(addprefix ../output/, optimum_seed_%.csv beta_%.csv fe_i_%.csv fe_j_%.csv fe_i_unnorm_%.csv fe_j_unnorm_%.csv fe_i_inter_%.csv fe_j_inter_%.csv ife_ij_%.csv) ../temp/labor_b_approx_ife_%.csv: select_optimal_ests_%.sbatch \
+	$(addprefix ../temp/multistarts/2010/, $(foreach s, $(set_start), beta_%_$(s).csv fe_i_%_$(s).csv fe_j_%_$(s).csv)) ../temp/nyc2010_lodes.csv | $(OOPR)
+ifneq ($(shell command -v sbatch),)
 	sbatch -W $<
+else
+	matlab -batch "select_optimal_ests_from_multistarts $* 200 2010" > /dev/null
+endif
 	rm select_optimal_ests_$*.sbatch
 
 # These lines allow us to call a Matlab script from Make and run via sbatch; due to limitations
@@ -40,22 +48,26 @@ $(addprefix ../output/, optimum_seed_%.csv beta_%.csv fe_i_%.csv fe_j_%.csv fe_i
 # to explicitly construct and fill a new .sbatch file for each job.
 
 # 200 multiple starting points for R >= 1
-$(foreach rank, $(set_rank_ife), select_optimal_ests_$(rank).sbatch): select_optimal_ests_%.sbatch:
+$(foreach rank, $(set_rank_ife), select_optimal_ests_$(rank).sbatch): select_optimal_ests_%.sbatch: select_optimal_ests_from_multistarts.m | matlab_slurm_header.sbatch
 	cat matlab_slurm_header.sbatch > $@
 	echo matlab -batch \"select_optimal_ests_from_multistarts $* 200 2010\" >> $@
 
 # 1 starting point for R = 0
-select_optimal_ests_0.sbatch:
+select_optimal_ests_0.sbatch: select_optimal_ests_from_multistarts.m | matlab_slurm_header.sbatch
 	cat matlab_slurm_header.sbatch > $@
 	echo matlab -batch \"select_optimal_ests_from_multistarts 0 1 2010\" >> $@
 
 # Eigenvalue ratio test to determine optimal rank
-../output/optimal_rank_%_2010.txt: eigenvalue_ratio_test.m | $(OOPR)
+../output/optimal_rank_%_2010.txt: eigenvalue_ratio_test.m ../output/fe_i_inter_%.csv ../output/fe_j_inter_%.csv | $(OOPR)
 	$(eval arg := $(shell echo $(@F) | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
 	$(eval script := $(shell echo $< | sed 's/\.m//'))
 	cat matlab_slurm_header.sbatch > prepared_slurm.sbatch
 	echo matlab -batch \"$(script) $(arg)\" >> prepared_slurm.sbatch
+ifneq ($(shell command -v sbatch),)
 	sbatch -W prepared_slurm.sbatch
+else
+	matlab -batch "$(script) $(arg)" > /dev/null
+endif
 	rm prepared_slurm.sbatch
 
 ../output/gravity_time_NYC_IFE.tex: table_generator_IFE.R \
@@ -81,16 +93,25 @@ int_fe_est.m: | IFE_MLE.m
 ../temp/ife_mcf_r2.csv: mcfadden_r2_calculation.jl $(IFE_OUTPUTS) | $(OOPR) $(JULIA_OOPR)
 	$(JULIA) $< $(max_rank)
 
+
 # Multistart parameter estimates
 .PRECIOUS: $(addprefix ../temp/multistarts/2010/,beta_%.csv fe_i_%.csv fe_j_%.csv)
 $(addprefix ../temp/multistarts/2010/,beta_%.csv fe_i_%.csv fe_j_%.csv obj_%.csv): int_fe_est_%.sbatch int_fe_est.m ../temp/nyc2010_lodes.csv | $(OOPR) ../temp/multistarts/2010 ../temp/multistarts
+ifneq ($(shell command -v sbatch),)
 	sbatch -W $<
+else
+	$(eval args := $(shell echo $< | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
+	matlab -batch "int_fe_est $(args) 10000 $(set_commuting_elas_precision) $(set_fe_precision) 2010" > /dev/null
+endif
 
 # Argument for int_fe_est.m: rank, seed, MAX_STEPS, precision_beta, precision_FEs, year
 int_fe_est_%.sbatch: | matlab_slurm_header.sbatch
 	$(eval args := $(shell echo $(@F) | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'))
 	cat matlab_slurm_header.sbatch > $@
 	echo matlab -batch \"int_fe_est $(args) 10000 $(set_commuting_elas_precision) $(set_fe_precision) 2010\" >> $@
+
+matlab_slurm_header.sbatch: run.sbatch
+	cat <(grep -v 'command' run.sbatch) <(echo module load MATLAB/R2023b) > $@
 
 ## DIRECTORY RECIPE
 ../temp/multistarts/2010 ../temp/multistarts: 
@@ -101,4 +122,3 @@ int_fe_est_%.sbatch: | matlab_slurm_header.sbatch
 	ln -sf $< $@
 ../input/NYC2010_gravity_time_impute_simple.tex: ../input/%.tex: ../../LODES_gravity_analysis/output/%.tex | ../input
 	ln -sf $< $@
-

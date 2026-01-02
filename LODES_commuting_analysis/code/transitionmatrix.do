@@ -84,4 +84,5 @@ local multicol = 5+2
 frmttable using "../output/`1'_2013_2014_transition_matrix.tex", statmat(rowpct) nocenter ///
 	ctitle("2014" \ "2013","0","1","2","3","4","5+") multicol(1,1,`multicol') rtitles("0"\"1"\"2"\"3"\"4"\"5+") tex frag replace
 
-shell sed -i '' 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/`1'_2013_2014_transition_matrix.tex"
+shell sed -i.bak 's/\\end{tabular}\\\\/\\end{tabular}/g' "../output/`1'_2013_2014_transition_matrix.tex"
+rm ../output/`1'_2013_2014_transition_matrix.tex.bak

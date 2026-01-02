@@ -116,6 +116,31 @@ check_julia_version() {
 	fi;
 } ;
 
+matlab_pc_and_slurm() {
+	if command -v sbatch > /dev/null ; then
+		command1="module load MATLAB/R2023b";
+		if [ "$1" == "--no-job-name" ]; then
+			shift;
+			command2="matlab -batch \"$@\"";
+			print_info MATLAB $@;
+        	sbatch -W --export=command1="$command1",command2="$command2" run.sbatch;
+		else
+			command2="matlab -batch \"$@\"";
+			jobname1=$(echo "${1%.*}_" | sed 's/\.\.\/input\///');
+            jobname2=$(echo ${@:2} | sed -E 's/\.\.\/(temp|input|code|output).//g' | sed -E 's/( |\/)/_/g' | cut -c '1-200');
+            full_jobname=$(echo "$jobname1$jobname2" | sed -E 's/_{2,}/_/g' | sed -E 's/_$//g');
+			print_info MATLAB $@;
+			sbatch -W --export=command1="$command1",command2="$command2" --job-name="$full_jobname" run.sbatch;
+		fi;
+	else
+        if [ "$1" == "--no-job-name" ]; then
+            shift;
+        fi;
+        print_info MATLAB $@;
+        matlab -batch $@;
+	fi 
+} ;
+
 clean_task() {
 	find ${1} -type l -delete;
 	PARENT_DIR=${1%/code};
