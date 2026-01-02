@@ -1,1 +1,2 @@
-This task takes around 10 minutes to complete.
+real	6m42.850s
+user	6m29.778s
