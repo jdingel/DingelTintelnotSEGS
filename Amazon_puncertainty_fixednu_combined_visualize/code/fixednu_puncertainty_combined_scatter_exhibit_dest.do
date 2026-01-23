@@ -35,7 +35,7 @@ twoway  (scatter d_real_wage_ratio_p95_fixednu d_real_wage_ratio_mean_fixednu , 
         graphregion(color(white))  ///
         legend(size(med) region(lstyle(none) lcolor(white)) order(5 6 7 8) label(5 "Idiosyncrasies 95th percentile") label(6 "Idiosyncrasies 5th percentile") label(7 "Parameter uncertainty 95th pctile") label(8 "Parameter uncertainty 5th pctile")) ///
         xtitle("Mean percent change in wage", size(medlarge)) ytitle("Percent change",size(medlarge))  ///
-        ylabel(,labsize(medlarge) gmax) xlabel(,labsize(medlarge))
+        ylabel(,labsize(medlarge) gmax) xlabel(, format(%3.1f) labsize(medlarge))
 graph export "../output/fixednu_puncertainty_scatter_wage.eps", replace
 
 tempfile wage

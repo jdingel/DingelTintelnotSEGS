@@ -37,7 +37,8 @@ twoway (kdensity slope_cbm, lcol(blue) yaxis(1)) (kdensity intercept_cbm, lcol(b
        		label(2 "Covariates-based: intercept") ///
        		label(3 "Calibrated-shares: slope") ///
        		label(4 "Calibrated-shares: intercept")) ///
-       ytitle("Density") xtitle("")
+       ytitle("Density") xtitle("") ///
+       xlabel(, format(%3.1f)) ylabel(, axis(1)) ylabel(, axis(2))
 graph export "../output/slopes_intercepts_densities_continuum_labor.eps", replace fontface("Times")
 // graph export is not compatible with decimal numbers in filenames
 shell mv "../output/slopes_intercepts_densities_continuum_labor.eps" ///
@@ -55,7 +56,7 @@ sum ratio_MSE, detail
 local ratio_MSE_start = floor(`r(min)' * 10) / 10 
 twoway (hist ratio_MSE, lcolor(black) fcolor(none) start(`ratio_MSE_start') width(0.0005) fraction), ///
 	graphregion(color(white)) xtitle("Covariates-based MSE / Calibrated-shares MSE") ///
-	xlabel(#6) legend(off)
+	xlabel(#6, format(%5.3f)) ylabel(, format(%3.1f)) legend(off)
 graph export "../output/MSE_ratio_histogram_continuum_labor.eps", replace fontface("Times")
 shell mv "../output/MSE_ratio_histogram_continuum_labor.eps" ///
 	"../output/MSE_ratio_histogram_continuum_labor_`1'_`popu'_`3'.eps" 

@@ -10,7 +10,7 @@ file write outputfile "In the 2006--2010 American Community Survey (ACS) data, t
 file close outputfile
 
 file open outputfile using "../output/counties_are_granular.tex", write append
-file write outputfile "\footnote{We follow \cite{MonteReddingRossi-Hansberg:2018} by restricting attention to county pairs that are less than 120 kilometers apart.}" _n
+file write outputfile "\footnote{We follow \citesupp{MonteReddingRossi-Hansberg:2018} by restricting attention to county pairs that are less than 120 kilometers apart.}" _n
 file close outputfile
 
 summarize X_ij if ID_h==ID_w
