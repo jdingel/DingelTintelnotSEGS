@@ -32,9 +32,11 @@ include ../../generic.make
 ../output/paper.pdf: paper.tex DT.bib $(shell grep -o '\.\./input/[A-Za-z0-9_\.]*\.[a-z]*' paper.tex) | ../output
 	pdflatex -draftmode --shell-escape $<
 	bibtex $(basename $<)
+	bibtex supp
 	pdflatex -draftmode --shell-escape $<
 	pdflatex $<
 	rm $(addprefix $(basename $<), .aux .log .out .bbl .blg)
+	rm supp.aux supp.bbl supp.blg
 	mv $(notdir $@) $@
 
 .PHONY: clean

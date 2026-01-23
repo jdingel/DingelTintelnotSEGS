@@ -13,6 +13,8 @@
 \usepackage{mathtools}
 \usepackage{url}
 \usepackage[authoryear]{natbib}
+\usepackage[resetlabels]{multibib}
+\newcites{supp}{Supplemental Appendix references}
 \usepackage{booktabs} %Package with \toprule, \midrule, \bottomrule
 \usepackage{placeins} %Package with \FloatBarrier command
 %\usepackage{physics}
@@ -565,8 +567,6 @@ Panels~\subref*{fig:83events:geoagg:density_slope} and~\subref*{fig:83events:geo
 depict predictive performance after aggregating the tract-level predictions underlying Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} of Figure~\ref{fig:event:83events:coefficientdensities}
 up to 195 Neighborhood Tabulation Areas.
 We sum the predicted change in commuters to the booming workplace tract across all residential tracts in an NTA.
-In panel~\subref*{fig:83events:temporalagg:density_slope},
-\input{../input/cbm_pool_2008_2010_vs_csp_pool_2008_2010_kdensity_notes.tex}
 In Panel~\subref*{fig:83events:geoagg:density_slope},
 only the slope coefficients are depicted.
 Vertical lines depict the medians of the slope coefficient distributions.
@@ -1321,7 +1321,7 @@ and
 \end{center}
 \end{figure}
 
-\bibliographystyle{aeanobold-oxford}
-\bibliography{DT}
+\bibliographystylesupp{aeanobold-oxford}
+\bibliographysupp{DT}
 
 \end{document}
