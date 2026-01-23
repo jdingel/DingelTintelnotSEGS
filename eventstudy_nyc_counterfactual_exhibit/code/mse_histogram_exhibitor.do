@@ -12,8 +12,44 @@ syntax , ratio(varname) x_axis_title(string) filename(string)
 if strpos("`filename'", "cbm_deltainf_vs_csp_sigma_4.0") > 0 | strpos("`filename'", "cbm_sigma_4.0_vs_csp_sigma_4.0") > 0{
     histogram `ratio', lcolor(black) fcolor(none) xscale(range(0.1 1.3)) width(0.05) fraction ///
     graphregion(color(white)) ///
-    xlabel(#13,labsize(large)) ylabel(,labsize(large)) ///
+    xlabel(#13, format(%3.1f) labsize(large)) ylabel(, format(%3.2f) labsize(large)) ///
     xtitle("`x_axis_title'", size(large)) ytitle(,size(large)) legend(off)
+}
+else if strpos("`filename'", "cbm_sigma_4.0_vs_svd_16") > 0{
+    egen min_ratio = min(`ratio')
+    local floor = 0.1 * floor(min_ratio/0.1)
+    sum `ratio', d
+    local xmax = ceil(`r(max)'*10)/10
+    local xmin = floor(`r(min)'*10)/10
+    local stepsize = round((`xmax' - `xmin')/20, .025)
+    if `stepsize' == 0 {
+        local stepsize = 0.025
+    }
+    if inrange(`stepsize', 0.06,.14) { //round to 0.1 if appropriate
+        local stepsize = 0.1
+    }
+    twoway (hist `ratio', lcolor(black) fcolor(none) start(`floor')  ///
+        width(`stepsize') fraction), graphregion(color(white)) ///
+        xlabel(#13, format(%3.1f) labsize(large)) ylabel(, format(%3.1f) labsize(large)) ///
+        xtitle("`x_axis_title'", size(large)) ytitle(,size(large)) legend(off)
+}
+else if strpos("`filename'", "cbm_sigma_4.0_vs_ife_1") > 0{
+    egen min_ratio = min(`ratio')
+    local floor = 0.1 * floor(min_ratio/0.1)
+    sum `ratio', d
+    local xmax = ceil(`r(max)'*10)/10
+    local xmin = floor(`r(min)'*10)/10
+    local stepsize = round((`xmax' - `xmin')/20, .025)
+    if `stepsize' == 0 {
+        local stepsize = 0.025
+    }
+    if inrange(`stepsize', 0.06,.14) { //round to 0.1 if appropriate
+        local stepsize = 0.1
+    }
+    twoway (hist `ratio', lcolor(black) fcolor(none) start(`floor')  ///
+        width(`stepsize') fraction), graphregion(color(white)) ///
+        xlabel(0.7 "0.7" 0.75 "0.75" 0.8 "0.8" 0.85 "0.85" 0.9 "0.9" 0.95 "0.95" 1.0 1.05 1.1 1.15 1.2 1.25 1.3, labsize(large)) ylabel(, format(%3.1f) labsize(large)) ///
+        xtitle("`x_axis_title'", size(large)) ytitle(,size(large)) legend(off)
 }
 else{
     egen min_ratio = min(`ratio')

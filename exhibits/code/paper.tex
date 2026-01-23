@@ -13,6 +13,8 @@
 \usepackage{mathtools}
 \usepackage{url}
 \usepackage[authoryear]{natbib}
+\usepackage[resetlabels]{multibib}
+\newcites{supp}{Supplemental Appendix references}
 \usepackage{booktabs}
 \usepackage{placeins}
 \usepackage{datetime}
@@ -118,7 +120,7 @@ counterfactual changes in local economic outcomes
 are uncertain because they depend on individuals' \idiosyncraticphrase s.
 
 
-In this paper, we examine the application of quantitative spatial models to granular settings.
+In this article, we examine the application of quantitative spatial models to granular settings.
 In doing so, we make three main contributions.
 First, we show that
 the calibration procedure most often used, which perfectly matches the observed baseline outcomes, predicts changes in outcomes poorly in granular settings.
@@ -297,6 +299,8 @@ Similar to our framework, \cite{Panigrahi:2022} models a finite set of firms tha
 Our paper makes two contributions to these various strands of the literature.
 First, we demonstrate the importance of avoiding overfitting when using continuum models to predict counterfactual outcomes.
 Second, we introduce a spatial model with a finite number of individuals that quantifies the uncertainty about counterfactual outcomes induced by individual idiosyncrasies.
+
+\nocite{DingelTintelnot:2026}
 \section{Computing counterfactual outcomes in continuum models}\label{sec:cont_model}
 
 This section describes the computation of counterfactual outcomes in quantitative spatial models.
@@ -1856,7 +1860,7 @@ For hundreds of workplace tracts, the 90\% confidence interval includes both neg
 	as shown in Figure~\ref{fig:fixednu:g_realwage}.
 }
 For tracts predicted to lose many workers, the predicted change is sufficiently large relative to the uncertainty that even the 95\textsuperscript{th} percentile of changes is negative.
-It out turns that a binomial distribution
+It turns out that a binomial distribution
 with $I$ draws and $p$ equal to the expected change in the share of employment
 (the analytical result for uncertainty for the two-workplace case mentioned in Section~\ref{sec:finitemodel:counterfactuals}),
 is a good approximation of the 90\% confidence intervals depicted in Figure~\ref{fig:fixednu:g_emp_simulation}.%
@@ -1895,7 +1899,7 @@ all the real rent changes and more than 95\% of the real wage changes produced b
 are inside the 90\% confidence intervals of the predictions from the 2010 estimated model depicted in Figure~\ref{fig:NYC:AmazonHQ2:parameteruncertainty}.%
 \footnote{%
 	By contrast, the calibrated-shares procedure's predictions are much more sensitive to the use of 2008 versus 2010 data.
-	The correlation between the real rent changes shown in Figure~\ref{fig:AHQ2:rentchange:CSP} and those obtained using the 2008 data is only \input{../input/correlation_realr_csp_2008_2010.tex}\unskip (\input{../input/correlation_realw_csp_2008_2010.tex}\unskip for real wages).
+	The correlation between the real rent changes shown in Figure~\ref{fig:AHQ2:rentchange:CSP} and those obtained using the 2008 data is only \input{../input/correlation_realr_csp_2008_2010.tex} (\input{../input/correlation_realw_csp_2008_2010.tex} for real wages).
 }
 
 As we move from tract-level outcomes to examining larger geographic units,
@@ -2001,7 +2005,7 @@ Thus, it can be applied in the same settings in which economists have thus far a
 \numberwithin{figure}{section}
 \numberwithin{table}{section}
 \appendixpagenumbering
-\section{Monte Carlo simulations}\label{sec:appendix:counterfacutals}
+\section{Monte Carlo simulations}
 
 We conduct a Monte Carlo simulation to examine the finite-data performance of 
 the covariates-based approach and the calibrated-shares procedure.
@@ -2317,7 +2321,7 @@ Between 2010 and 2012, Tiffany \& Co. and Google both substantially increased th
 These tracts are two of the 83 examined in the event studies in
 Section~\ref{sec:ctflgranular:eventstudies}.
 
-\begin{figure}[!hbt]
+\begin{figure}[p]
 \caption{Employment in two of the event-study tracts}
 \label{fig:eventstudies:employmentseries}
 \vspace{-6mm}
@@ -2330,18 +2334,17 @@ Section~\ref{sec:ctflgranular:eventstudies}.
 \par}
 \end{minipage}
 \end{center}
-\vspace{-2em}
 \end{figure}
 
 \subsection{Event studies using temporal and geographic aggregation}\label{sec:appendix:eventstudies:tempgeoaggregation}
 
-Figure~\ref{fig:event:83events:pooled:coefficientdensities} present the results of 
+Figure~\ref{fig:event:83events:pooled:coefficientdensities} presents the results of 
 pooling multiple years of data
 and
 aggregating the predicted changes in number of commuters to the booming workplace tracts
 from residential tracts up to residential NTAs.
 
-\begin{figure}[!h]
+\begin{figure}[p]
 \caption{Models' predictive performance with temporal and geographic aggregation}
 \label{fig:event:83events:pooled:coefficientdensities}
 \label{fig:event:83events:NTAs:coefficientdensities}
@@ -2369,8 +2372,6 @@ Panels~\subref*{fig:83events:geoagg:density_slope} and~\subref*{fig:83events:geo
 depict predictive performance after aggregating the tract-level predictions underlying Panels~\subref*{fig:eventstudy_coef_cont_cs} and \subref*{fig:mse_cont_cs} of Figure~\ref{fig:event:83events:coefficientdensities}
 up to 195 Neighborhood Tabulation Areas.
 We sum the predicted change in commuters to the booming workplace tract across all residential tracts in an NTA.
-In panel~\subref*{fig:83events:temporalagg:density_slope},
-\input{../input/cbm_pool_2008_2010_vs_csp_pool_2008_2010_kdensity_notes.tex}
 In Panel~\subref*{fig:83events:geoagg:density_slope},
 only the slope coefficients are depicted.
 Vertical lines depict the medians of the slope coefficient distributions.
@@ -2439,7 +2440,7 @@ That is, for some particular rank \(\mathfrak{r}\), replace the commuting matrix
 \end{equation}
 where \(\Vert \cdot \Vert_F\) is the Frobenius matrix norm.
 The solution to this problem can be computed from the singular value decomposition (SVD) of the original matrix \(\mathbf{L}\).
-In particular, the optimal approximation \(\tilde{\mathbf{L}}\) is given by the following algorithm \citep{HastieTibshiraniWainwright:2015}:
+In particular, the optimal approximation \(\tilde{\mathbf{L}}\) is given by the following algorithm \citepsupp{HastieTibshiraniWainwright:2015}:
 \begin{itemize}
     \item Compute the SVD of $\mathbf{L}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, 
     where $\mathbf{U}$ is a $K \times K$ orthonormal matrix, 
@@ -2537,7 +2538,7 @@ These are depicted in a scree plot in Figure~\ref{fig:SVD:scree},
 which normalizes the singular values by dividing each by the sum of all singular values (i.e., $\frac{\sigma_{i'}}{\sum_i \sigma_i}$)
 and
 restricts attention to the 25 largest singular values.
-This normalization allows us to interpret each singular value as representing a fraction of the matrix's total variation \citep[p.499]{Cohen:2021}.
+This normalization allows us to interpret each singular value as representing a fraction of the matrix's total variation \citepsupp[p.499]{Cohen:2021}.
 
 \begin{figure}[hbt]
 \caption{Scree plot (ordered singular values) for NYC 2010 commuting matrix}
@@ -2554,7 +2555,7 @@ This figure shows the magnitude of successive singular values for the NYC 2010 c
 \end{figure}
 
 Figure~\ref{fig:SVD:scree} allows us to evaluate two distinct rank criteria. The first is an informal procedure known as the ``elbow'' method, which is a method of visual inspection that attempts to identify the singular values that are substantially larger than the rest.
-The second, the variance criterion, is numerically founded but nonetheless requires a cutoff chosen by the researcher \citep[p.496]{Cohen:2021}.
+The second, the variance criterion, is numerically founded but nonetheless requires a cutoff chosen by the researcher \citepsupp[p.496]{Cohen:2021}.
 For the variance criterion, we compare the magnitude of each singular value with \(0.5\%\) of the sum of singular values; that is, we identify the set \hbox{\(\{\sigma_i\,|\,\sigma_i \geq 0.005\sum_j \sigma_j\}\)}.
 This cutoff is shown with a dashed horizontal line in the scree plot.
 The two methods offer substantially different answers in our case, with the elbow method suggesting a lower rank of \(4\) and the 0.5\% variance criterion suggesting a rank of 16. 
@@ -2588,7 +2589,7 @@ The rank-16 results are shown in Figure \ref{fig:event:83events:SVD:coefficientd
 \subsubsection{Non-negative matrix factorization}\label{sec:appendix:nnmf}
 
 While the previously outlined SVD procedure is one means of implementing noise reduction,
-truncating the commuting shares to be non-negative means that the resulting approxmiation is not necessarily low-rank.
+truncating the commuting shares to be non-negative means that the resulting approximation is not necessarily low-rank.
 Another approach is to use an algorithm that imposes the non-negativity constraint.
 That is, we find a solution to the problem 
 \begin{equation}
@@ -2600,7 +2601,7 @@ That is, we find a solution to the problem
 
 
 Solving this problem is more difficult and, unlike in the unconstrained case in which the solution is uniquely determined by SVD, there may be multiple (local) optima. 
-We use the Greedy Coordinate Descent algorithm from \cite{HsiehDhillon:2011} with a fixed initialization as implemented in the Julia package \texttt{NMF}.
+We use the Greedy Coordinate Descent algorithm from \citesupp{HsiehDhillon:2011} with a fixed initialization as implemented in the Julia package \texttt{NMF}.
 This procedure produces low-rank approximated matrices that deliver very similar performance 
 as the computationally simpler SVD procedure described above.
 The results for event studies are shown in Table~\ref{tab:nnmf:summary}.
@@ -2665,7 +2666,6 @@ This table reports the predictive performance, as measured by the average values
     \vspace{-1.5em}
 \end{table}
 
-
 \subsection{Interactive fixed effects}
 \label{sec:appendix:ifes}
 
@@ -2686,7 +2686,7 @@ The log likelihood function then becomes
 \end{equation}
 
 
-In practice, to implement the estimation of the parameters, we follow \cite{chen2021nonlinear}, who estimate interactive fixed effects in a Poisson model.
+In practice, to implement the estimation of the parameters, we follow \citesupp{chen2021nonlinear}, who estimate interactive fixed effects in a Poisson model.
 Here, multiple practical difficulties  arise.
 Most critically, the likelihood is no longer convex; in particular, there is the possibility of multiple local optima.
 To guard against this, we use multiple randomized starting points and select the parameter estimates that produce the highest likelihood.
@@ -2697,7 +2697,7 @@ Our purely interactive factor dimension is, in their notation, \(R_2\).}
 
 In the main text, we show the estimates from the model with \(R = 1\) for two reasons.
 First, we take advantage of the relative computational ease of the \(R = 1\) case to estimate from a large number of starting points and find a consistent convergence pattern that suggests our estimate is the true optimum.
-Second, the eigenvalue ratio test suggested by \cite{chen2021nonlinear} indicates that \(R = 1\) is the optimal factor structure among the set of options \(\{1, 2\}\).
+Second, the eigenvalue ratio test suggested by \citesupp{chen2021nonlinear} indicates that \(R = 1\) is the optimal factor structure among the set of options \(\{1, 2\}\).
 Possible choices of \(R\) span the range from the covariates-based specification (when \(R = 0\)) to the calibrated-shares procedure (the full-rank case).\footnote{
 Consider the case of a \(2 \times 2\) commuting matrix \(A\).
 This matrix can be decomposed into two \(2 \times 2\) matrices (e.g., $A I$).
@@ -2712,7 +2712,7 @@ The event study results for rank $R=\{2,3\}$ are very similar to those for rank 
 \subsubsection{Estimation results}
 
 Table~\ref{tab:elasticity:IFE} presents the estimates from
-maximizing the log likelihood function in equation~\eqref{eq:loglikelihood_ife} using the algorithm outlined by \cite{chen2021nonlinear}.
+maximizing the log likelihood function in equation~\eqref{eq:loglikelihood_ife} using the algorithm outlined by \citesupp{chen2021nonlinear}.
 We show results for \(R = 0, 1, 2, 3\), where \(R = 0\) is identical to the covariates-based model and the OLS column is included for the sake of comparison.
 The magnitude of the commuting elasticity $\epsilon$ diminishes with the rank of the factor structure.
 As expected, the model fit metrics increase with the factor structure rank, as higher ranks correspond to more free parameters to attain better (in-sample) fit.
@@ -2942,7 +2942,7 @@ This specification yields the following log likelihood function:
     \right].
 \end{align*}
 
-We sequentially estimate the parameters of the nested-logit model \citep{Train:2009}.
+We sequentially estimate the parameters of the nested-logit model \citepsupp{Train:2009}.
 In the first step, we maximize the log likelihood with respect to
 $\mathring{\epsilon}/\zeta$, residence fixed effects, workplace fixed effects, and
 nest-specific fixed effects.
@@ -3158,25 +3158,7 @@ is
   \right] ^ \frac{1}{1 - \sigma}
 .\end{equation*}
 
-\begin{figure}[!h]
-    \caption{Event-study slope coefficients by local increasing returns \(\eta\)}
-    \label{fig:eta_comparisons:slopes}
-    \begin{center}\vspace{-4mm}
-    \subfloat[Slope coefficients for $\eta = 0.0028$ versus $\eta = 0$]{
-        \includegraphics[width=.49\linewidth]{../input/slope_eta_0.0028_csp_comparison_scatterplot.eps}
-    }
-    \subfloat[Slope coefficients for $\eta = 0.1$ versus $\eta = 0$]{
-        \includegraphics[width=.49\linewidth]{../input/slope_eta_0.1_csp_comparison_scatterplot.eps}
-    }\\ \vspace{-2mm}
-    \begin{minipage}{0.90\textwidth}{\footnotesize
-    \textsc{Notes}:
-    The slope coefficients come from regressions of the observed change in commuters on the 
-    predicted change in commuters for each of the 83 tract-level employment booms. 
-    The baseline case, \(\eta = 0\), is the model without increasing returns.
-    \par}\end{minipage}\\ \vspace{4mm}
-    \end{center}\vspace{-2em}
-\end{figure}
-
+\enlargethispage{\baselineskip}
 In the event studies of 83 local employment booms, 
 the covariates-based model outperforms the calibrated-shares procedure regardless of the value of $\eta$; 
 varying $\eta$ does not meaningfully change the slope, intercept, or MSEs.
@@ -3186,6 +3168,26 @@ the sufficient condition for the equilibrium uniqueness.
 As an example, 
 Figure~\ref{fig:eta_comparisons:slopes} shows that the slope coefficients obtained
 when using $\eta = .0028$ or $\eta = 0.1$ are very similar to those for $\eta = 0$ in the calibrated-shares procedure.
+
+\clearpage
+\begin{figure}[!h]
+  \caption{Event-study slope coefficients by local increasing returns \(\eta\)}
+  \label{fig:eta_comparisons:slopes}
+  \begin{center}\vspace{-4mm}
+  \subfloat[Slope coefficients for $\eta = 0.0028$ versus $\eta = 0$]{
+    \includegraphics[width=.49\linewidth]{../input/slope_eta_0.0028_csp_comparison_scatterplot.eps}
+  }
+  \subfloat[Slope coefficients for $\eta = 0.1$ versus $\eta = 0$]{
+    \includegraphics[width=.49\linewidth]{../input/slope_eta_0.1_csp_comparison_scatterplot.eps}
+  }\\ \vspace{-2mm}
+  \begin{minipage}{0.90\textwidth}{\footnotesize
+  \textsc{Notes}:
+  The slope coefficients come from regressions of the observed change in commuters on the 
+  predicted change in commuters for each of the 83 tract-level employment booms. 
+  The baseline case, \(\eta = 0\), is the model without increasing returns.
+  \par}\end{minipage}\\ \vspace{4mm}
+  \end{center}\vspace{-2em}
+\end{figure}
 \clearpage
 \section{Theory: Proofs and extensions}\label{sec:appendix:theory}
 \label{sec:appendix:theory:continuum}
@@ -3208,7 +3210,7 @@ trade costs, the use of land in production, residential amenities, and local inc
 \subsection{Existence and uniqueness of continuum model's equilibrium}\label{sec:appendix:theory:continuumexistence}
 
 We derive a set of parameter values sufficient for the existence and uniqueness of the continuum model's equilibrium.
-As shown in Theorem~1 of \cite{AllenArkolakisLi:2023}, the spectral radius of the elasticity matrix characterizes the existence and uniqueness properties of the system.
+As shown in Theorem~1 of \citesupp{AllenArkolakisLi:2023}, the spectral radius of the elasticity matrix characterizes the existence and uniqueness properties of the system.
 
 The equilibrium of the continuum model can be written as
 \begin{align}
@@ -3229,10 +3231,10 @@ given values for $\Theta$ and $P$.
 Although $\Theta$ and $P$ are endogenous,
 they do not vary across locations.
 Accordingly, they fall under the class of endogenous scalars
-discussed in Remark~4 of \cite{AllenArkolakisLi:2023},
+discussed in Remark~4 of \citesupp{AllenArkolakisLi:2023},
 which leave the conclusion of their Theorem~1 Part ii.b unchanged.
  
-Following Remark~5 of \cite{AllenArkolakisLi:2023},
+Following Remark~5 of \citesupp{AllenArkolakisLi:2023},
 we construct the intermediate matrices $\mathbf{\Gamma}$ and $\mathbf{B}$:
 \begin{equation*}
     \mathbf{\Gamma} = \begin{bmatrix}
@@ -3276,9 +3278,9 @@ We assume $\sigma>1$.
 We want to show that the spectral radius,
 the absolute value of the maximum eigenvalue,
 of $\mathbf{A}$ (denoted $\rho(\mathbf{A})$) equals one.
-The reasoning in Remark 6 in Appendix~B.1.5 of \cite{AllenArkolakisLi:2023} demonstrates that $\rho(\mathbf{A}) \geq 1$.
+The reasoning in Remark 6 in Appendix~B.1.5 of \citesupp{AllenArkolakisLi:2023} demonstrates that $\rho(\mathbf{A}) \geq 1$.
 Thus, it remains to show that $\rho(\mathbf{A}) \leq 1$.
-To do so, we will use Lemma~1 in Appendix B.1.6 from \cite{AllenArkolakisLi:2023}.
+To do so, we will use Lemma~1 in Appendix B.1.6 from \citesupp{AllenArkolakisLi:2023}.
 Consider the matrix
 \begin{equation*}
     \lambda I - \mathbf{A} = \begin{bmatrix}
@@ -3296,7 +3298,7 @@ f(\lambda) &= \lambda^3 - \lambda^2 \left(\frac{1+\epsilon}{\sigma + \epsilon}\r
 f_1(\lambda) &= 3 \lambda^2 - 2 \lambda \left(\frac{1+\epsilon}{\sigma + \epsilon}\right) - \left(\frac{1+\epsilon}{\sigma + \epsilon}\right)\left(\frac{\alpha \epsilon}{1+\alpha \epsilon}\right)\\
 f_2(\lambda) &= 6 \lambda - \frac{2 (1+\epsilon)}{\sigma + \epsilon}.
 \end{align*}
-Lemma~1 of \cite{AllenArkolakisLi:2023} states that $\rho(\mathbf{A}) \leq 1$ if and only if $f_k(1) \geq 0$ for $k=0,1,2$.
+Lemma~1 of \citesupp{AllenArkolakisLi:2023} states that $\rho(\mathbf{A}) \leq 1$ if and only if $f_k(1) \geq 0$ for $k=0,1,2$.
 \begin{align*}
     f(1) &= 1 - \frac{1+\epsilon}{\sigma+\epsilon}
     - \left(\frac{1+\epsilon}{\sigma + \epsilon}\right) \left(\frac{\alpha \epsilon}{1+\alpha \epsilon}\right)
@@ -3318,7 +3320,7 @@ is satisfied by our baseline parameter values
 ($\alpha = 0.24$, $\sigma = 4$, $\epsilon = 7.986$).
 Under condition~\eqref{eqn:20201030Crews2:paramcond}, $\rho(\mathbf{A}) \leq 1$,
 which means that $\rho(\mathbf{A}) = 1$.
-Thus, by Theorem~1 Part ii.b of \cite{AllenArkolakisLi:2023},
+Thus, by Theorem~1 Part ii.b of \citesupp{AllenArkolakisLi:2023},
 if condition~\eqref{eqn:20201030Crews2:paramcond} is true,
 the equilibrium exists and is unique up to scale.
 \subsection{Exact hat algebra}\label{sec:appendix:theory:exacthatalgebra}
@@ -3443,7 +3445,7 @@ U_{kn}^{i} = \epsilon \ln\left(\frac{B_k w_n}{r_k^\alpha P^{1-\alpha} \delta_{kn
 .
 \end{equation*}
 In the model presented in the main text,
-residential amenities are do not vary across locations: 
+residential amenities do not vary across locations: 
 $B_{k} = 1 \ \forall k$.
 The probability of choosing residential-workplace pair $kn$ is now
 \begin{equation*}
@@ -3485,7 +3487,7 @@ are insufficient to separately identify $T_k$ and $\delta_{kn}$.
 One would also need to observe land prices $r_k$.
 
 When implementing this procedure in Sections~\ref{sec:ctflgranular:eventstudies} and~\ref{sec:AmazonHQ2:firstmoments},
-we compute tract-level workplace wages using LODES and ZIP Business Patterns data following \cite{OwensRossi-HansbergSarte:2020}.
+we compute tract-level workplace wages using LODES and ZIP Business Patterns data following \citesupp{OwensRossi-HansbergSarte:2020}.
 
 \subsection{Special case relating counterfactual errors to baseline-share errors\label{sec:appendix:theory:continuum:linearchanges}}
 
@@ -3833,7 +3835,7 @@ Recall from equation~\eqref{eqn:utility} that the indirect utility of an individ
 \begin{equation*}
   U_{kn}^i = \epsilon \log \left( \frac{w_n}{r_k^\alpha P^{1-\alpha} \delta_{kn}} \right) + \nu_{kn}^i.
 \end{equation*}
-Following equation~(3.10) in \cite{Train:2009},
+Following equation~(3.10) in \citesupp{Train:2009},
 one can show that the expected utility $\bar{U}$ of each (ex ante identical) worker,
 each of whom selects her utility-maximizing residence-workplace pair, is
 \begin{equation} \label{eqn:welfare:expectedutility}
@@ -4120,7 +4122,7 @@ Individual $i$'s utility from residing in $k$ and working in $n$ is now
     \tilde{U}_{kn}^{i} = \epsilon \ln\left(\frac{B_k \tilde{w}_n}{\tilde{r}_k^{\alpha}P^{1-\alpha} \delta_{kn}}\right) + \nu_{kn}^i
     .
 \end{equation}
-Note that local amenities can depend on local residential density as in \cite{AllenArkolakis:2014}:
+Note that local amenities can depend on local residential density as in \citesupp{AllenArkolakis:2014}:
 $B_k = \bar{B}_k \left( \sum_n \ell_{kn} \right)^{-\theta}$,
 where $\bar{B}_k$ is the fundamental amenities in location $k$, $\sum_n \ell_{kn}$ is the total number of individuals residing in $k$, and $\theta\geq 0$ governs the strength of the congestion force.
 When $\theta = 0$, local amenities are exogenous. 
@@ -4277,9 +4279,9 @@ Section~\ref{sec:data_sources} describes the data sources we employ.
 This section presents summary statistics for tract-to-tract commuting counts in the Detroit urban area and the Minneapolis-St. Paul metropolitan area in 2014 
 analogous to those reported for New York City in Section~\ref{sec:ctflgranular:summstats}.
 We chose these examples because
-\cite{OwensRossi-HansbergSarte:2020} study the Detroit urban area
+\citesupp{OwensRossi-HansbergSarte:2020} study the Detroit urban area
 and
-Minnesota is the only state that reports employment by establishment rather than firm in the LODES data \citep{GrahamKutzbachMcKenzie:2014}.
+Minnesota is the only state that reports employment by establishment rather than firm in the LODES data \citepsupp{GrahamKutzbachMcKenzie:2014}.
 
 The Detroit urban area \input{../input/text_count_pop_pair_DetroitUA_2014.tex},
 so the average cell in its commuting matrix is near one.
@@ -4381,10 +4383,10 @@ The final column reports the share of county pairs for which the Census-reported
 
 Commuting data from other countries show similar features of granular settings. 
 For example,
-one-quarter of Germany's county (Kreisfreie St\"{a}dte and Landkreise) pairs within 120 kilometers have fewer than 10 commuters \citep{KrebsPfluger:2023}.
+one-quarter of Germany's county (Kreisfreie St\"{a}dte and Landkreise) pairs within 120 kilometers have fewer than 10 commuters \citepsupp{KrebsPfluger:2023}.
 In Brazil's 2010 Censo Demogr\'{a}fico, which reports estimates based on a 10\% sample of the population,
 \input{../input/municipios_total_commuters_fragment.tex}%
-\footnote{\cite{DingelMiscioDavis:2021} use these data to construct metropolitan areas based on commuting flows.}
+\footnote{\citesupp{DingelMiscioDavis:2021} use these data to construct metropolitan areas based on commuting flows.}
 \input{../input/municipios_are_granular.tex}
 About three-quarters of the cells in this commuting matrix are empty.
 
@@ -4570,7 +4572,7 @@ migration flows are winsorized at 6 and values are given as a percentage of 2001
 The diagonal elements, for which the number of migrants is the same across the two years, are quite small.
 A significant portion of the positive migration flows in 2001 are zero in 2002, as shown in the first column of the table.
 
-\cite{FoschiHouseProebstingTesar:2023} also report that the ACS migration data exhibit finite-sample problems and suggest using Internal Revenue Service migration counts instead.
+\citesupp{FoschiHouseProebstingTesar:2023} also report that the ACS migration data exhibit finite-sample problems and suggest using Internal Revenue Service migration counts instead.
 
 \subsection{OLS estimation bias}\label{sec:appendix:estimation:OLSbias}
 
@@ -4624,7 +4626,7 @@ published by the US Census Bureau.%
 \footnote{See the
 \href{https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.4.pdf}{official documentation} 
 for details of the data structure.}
-Following \cite{OwensRossi-HansbergSarte:2020}, we use the primary job counts.
+Following \citesupp{OwensRossi-HansbergSarte:2020}, we use the primary job counts.
 
 The origin-destination data for NYC, Detroit, and Minneapolis-St. Paul are in the following files:
 
@@ -4681,7 +4683,7 @@ It can be downloaded from
 \item \texttt{E} The tract-to-tract number of commuters.
 \end{itemize}
 
-\noindent \textbf{NYC tract-to-tract transit time.} We use data from \cite{DavisDingelMonrasMorales:2019} describing pairs of New York City tracts in terms of the travel times by public transport. It can be downloaded from \url{https://github.com/jdingel/DavisDingelMonrasMorales/raw/master/initialdata/input/tractpairs.dta.zip}.
+\noindent \textbf{NYC tract-to-tract transit time.} We use data from \citesupp{DavisDingelMonrasMorales:2019} describing pairs of New York City tracts in terms of the travel times by public transport. It can be downloaded from \url{https://github.com/jdingel/DavisDingelMonrasMorales/raw/master/initialdata/input/tractpairs.dta.zip}.
 
 \begin{itemize}
 \item \texttt{geoid11\_orig} Origin 11-digit FIPS geographic identifier.
@@ -4693,13 +4695,13 @@ We use it to compute the commuting cost $\bar{\delta}_{kn}$.
 \noindent \textbf{Detroit tract-to-tract transit time.} 
 Our data on tract-to-tract transit time in Detroit come from 
 \texttt{Kij\_GoogleTime.xlsx} and \texttt{Tract\_Classification.xlsx} in the 
-\cite{OwensRossi-HansbergSarte:2020} \href{https://www.dropbox.com/s/zyanui1llqv2djh/RD\_AEJP\_0651\_Replication\_Files.zip?dl=0}{replication files}. 
+\citesupp{OwensRossi-HansbergSarte:2020} \href{https://www.dropbox.com/s/zyanui1llqv2djh/RD\_AEJP\_0651\_Replication\_Files.zip?dl=0}{replication files}. 
 Note that the benchmark year in our analysis is 2014. 
 Our analysis covers the 297 census tracts in Detroit, as well as the surrounding adjacent metro area 
 (Wayne County, Oakland County, and Macomb County), which includes 866 additional tracts.
 
 \begin{itemize}
-\item \texttt{duration\_minutes} Tract-to-tact travel time in minutes. 
+\item \texttt{duration\_minutes} Tract-to-tract travel time in minutes. 
 We reshape the data and obtain the IDs for workplace and residence tracts. 
 We then use the travel time to compute the commuting cost $\bar{\delta}_{kn}$.
 \item \texttt{work\_ID} Workplace identifier.
@@ -4716,11 +4718,11 @@ are retrieved from the US census tract-level geographical information.
 used to calculate geodesic distance between the centroids.
 \end{itemize}
 
-\noindent \textbf{ZIP Code Business Statistics.} We apply the method in \cite{OwensRossi-HansbergSarte:2020} to calculate a weighted wage from ZIP Code Business Patterns. 
+\noindent \textbf{ZIP Code Business Statistics.} We apply the method in \citesupp{OwensRossi-HansbergSarte:2020} to calculate a weighted wage from ZIP Code Business Patterns. 
 The yearly employed data are from \url{https://www2.census.gov/}: \texttt{econ2006/CB/sector00/CB0800CZ1.zip} 
-to \texttt{econ2010/CB/sector00/CB0600CZ1.zip} for data between 2008 and 2010, 
+to \texttt{econ2010/CB/sector00/}\allowbreak\texttt{CB0600CZ1.zip} for data between 2008 and 2010,
 and from 
-\\\texttt{econ2011/CB/sector00/CB1100CZ11.zip} to \texttt{econ2013/CB/sector00/CB1100CZ11.zip} 
+\texttt{econ2011/CB/sector00/CB1100CZ11.zip} to \texttt{econ2013/CB/sector00/}\allowbreak\texttt{CB1100CZ11.zip}
 for data between 2011 and 2013.
 
 \begin{itemize}
@@ -4758,7 +4760,8 @@ we use \href{https://www1.nyc.gov/assets/planning/download/office/data-maps/nyc-
 \item \texttt{NeighborhoodTabulationAreaNT} 4-digit NTA code.
 \item \texttt{CensusBureauFIPSCountyC} 3-digit FIPS census county code.
 \item \texttt{CensusTract} 9-digit FIPS census tract code.
-\end{itemize}\section{Finite model: Price dispersion and ``ex post regret''}\label{sec:appendix:expostregret}
+\end{itemize}
+\section{Finite model: Price dispersion and ``ex post regret''}\label{sec:appendix:expostregret}
 
 \subsection{Contrast with prices from continuum model}\label{sec:appendix:expostregret:Jenseninequality}
 
@@ -5253,10 +5256,10 @@ The panel depicts the 5\textsuperscript{th} and 95\textsuperscript{th} percentil
 To simulate draws from a nested-logit distribution $F(\mathring{\nu}^i)$,
 we first represent $\mathring{\nu}^i \sim F(\mathring{\nu}^i)$ using 
 a standard Gumbel distribution $\mathcal{G}(0,1)$ and a positive stable distribution (PSD) $\mathcal{P}(\zeta)$, 
-based on \cite{Galichon:2022}:
+based on \citesupp{Galichon:2022}:
 $\mathring{\nu}_{kn}^i = \zeta \left(\nu_{kn}^i + \log Z_{B_z}^i\right)$,
 where $\nu_{kn}^i$ follows $\mathcal{G}(0,1)$, and $Z_{B_z}^i$ follows $\mathcal{P}(\zeta)$.
-Second, we apply \cite{Ridout:2009}’s method to simulate $Z_{B_z}^i \sim \mathcal{P}(\zeta)$ for $\zeta = 0.25$.
+Second, we apply \citesupp{Ridout:2009}'s method to simulate $Z_{B_z}^i \sim \mathcal{P}(\zeta)$ for $\zeta = 0.25$.
 Finally, we combine the standard Gumbel draws and the PSD draws
 to construct the draws from the nested-logit distribution.
 \par}
@@ -5297,4 +5300,7 @@ and
 \end{minipage}
 \end{center}
 \end{figure}
+\clearpage
+\bibliographystylesupp{aeanobold-oxford}
+\bibliographysupp{DT}
 \end{document}

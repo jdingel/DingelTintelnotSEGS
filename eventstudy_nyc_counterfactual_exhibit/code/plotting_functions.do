@@ -16,7 +16,7 @@ twoway	(kdensity `prime_slope' if inrange(`prime_slope', `bounds'), xline(`media
 	(kdensity `comparison_intercept' if inrange(`comparison_intercept', `bounds'), lcol(red) lpattern(dash)) ///
 	, graphregion(color(white)) legend(region(lstyle(none)) label(1 "`prime_legend': slope") label(2 "`prime_legend': intercept") label(3 "`comparison_legend': slope") label(4 "`comparison_legend': intercept")) ///
 	legend(pos(`legend_pos') ring(0) col(1) size(medium) region(fcolor(none))) ///
-	ytitle("Density",size(vlarge)) ylabel(0(0.5)2,gmax labsize(large)) xtitle("") xsize(`fig_size')
+	ytitle("Density",size(vlarge)) ylabel(0 0.5 1 1.5 2, format(%3.1f) gmax labsize(large)) xtitle("") xsize(`fig_size')
 graph export "`filename'", replace as(eps) //Stata cannot detect file type when name contains periods.
 end
 
